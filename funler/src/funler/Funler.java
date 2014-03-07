@@ -6,7 +6,7 @@ import processing.core.PApplet;
 public class Funler extends PApplet {
 
 	public void setup() {
-		
+	    size(123, 321);
 	}
 
 	public void draw() {
