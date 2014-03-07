@@ -109,9 +109,9 @@ public class Funler extends PApplet {
 
 		if (debug == true) {
 			if (mode == null) {
-				mode = new GodMode();
+				mode = new GodMode(this);
 			}
-			mode.showAll(moveX, moveY);
+			mode.showAll(moveX, moveY, numMap);
 		}
 	}
 
