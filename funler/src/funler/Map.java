@@ -24,18 +24,26 @@ public class Map {
 		this.mapX = mapX;
 		this.mapY = mapY;
 		
-		numMap = new int[mapX][mapY]; 
-		buildMap();
+		numMap = new int[mapX][mapY];
+		//buildMap();
+		
+		rand();
+		
+		rendMap();
+		
 		//for testing purpuse
-		//rand();
+		
 		//test();
-		//rendMap();
+	}
+	
+	int[][] getMap() {
+		return numMap;
 	}
 
 	void rand() {
-		for (int i =0; i<tileMap.length; i++) {
-			for (int j =0; j<tileMap[0].length; j++) {
-				int r = (int) Math.random() * 4;
+		for (int i =0; i<numMap.length; i++) {
+			for (int j =0; j<numMap[0].length; j++) {
+				int r = (int) (Math.random() * 4.0f);
 				if (r == 0) {
 					numMap[i][j] = 1;
 				} 
@@ -47,8 +55,8 @@ public class Map {
 	}
 
 	void test() {
-		for (int i =0; i<tileMap.length; i++) {
-			for (int j =0; j<tileMap[0].length; j++) {    
+		for (int i =0; i<numMap.length; i++) {
+			for (int j =0; j<numMap[0].length; j++) {    
 				if (numMap[i][j] == 0) {
 					tileMap[i][j] = new Tile(0);
 				} 
@@ -148,7 +156,7 @@ public class Map {
 					count++;
 				}
 				else {
-					//sudent be here any more :P
+					//should not be here any more :P
 					count++;
 				}
 			}

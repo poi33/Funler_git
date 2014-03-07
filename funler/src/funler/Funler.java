@@ -5,7 +5,10 @@ import processing.core.PApplet;
 public class Funler extends PApplet {
 
 	// Mutal size... both partly implemented
-	public int[][] numMap = new int[50][50];
+	public int[][] numMap;
+	
+	public int mapWidth = 50;
+	public int mapHeight = 50;
 
 	public static final boolean DEBUG = false;
 
@@ -34,7 +37,8 @@ public class Funler extends PApplet {
 		colorMode(RGB);
 		frameRate(50);
 
-		mapc = new Map(numMap.length, numMap[0].length, this);
+		mapc = new Map(mapWidth, mapHeight, this);
+		numMap = mapc.getMap();
 
 		// initialize enemy
 
@@ -100,8 +104,7 @@ public class Funler extends PApplet {
 		// if its within borders draw scare in the middle
 		// if (moveX <= 0) {
 		fill(255);
-		// rect(width/2, height/2, 50, 50);
-		// image(mainC, width/2, height/2);
+		
 		rect(width / 2, height / 2, 50, 50);
 		// }
 		// else {
@@ -121,10 +124,6 @@ public class Funler extends PApplet {
 			}
 			mode.showAll(moveX, moveY, numMap);
 		}
-	}
-
-	int[][] getNumMap() {
-		return numMap;
 	}
 
 	public boolean sketchFullScreen() {
