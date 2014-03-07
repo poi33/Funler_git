@@ -85,13 +85,12 @@ public class Funler extends PApplet {
 
 		noStroke();
 
-		// mapc.drawMap();
-		mapc.drawMap(true);
+		mapc.drawMap(true, moveX, moveY);
 
 		// stroke(255, 255, 255);
 		// if its within borders draw scare in the middle
 		// if (moveX <= 0) {
-		fill(0x9B080A);
+		fill(255);
 		// rect(width/2, height/2, 50, 50);
 		// image(mainC, width/2, height/2);
 		rect(width / 2, height / 2, 50, 50);

@@ -3,6 +3,7 @@ package funler;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 public class Map {
 	PApplet parent;
@@ -71,7 +72,7 @@ public class Map {
 		}
 	}
 
-	void drawMap(boolean truth) {
+	void drawMap(boolean truth, int moveX, int moveY) {
 		int s = listType.size();
 		int row=0;
 		int col=0;
@@ -92,7 +93,7 @@ public class Map {
 			else {
 				parent.fill(50, 200, 50);
 			}
-			parent.rect(row*50, col*50, 50, 50);
+			parent.rect(row*50+moveX, col*50+moveY, 50, 50);
 		}
 	}
 
@@ -197,9 +198,7 @@ public class Map {
 				}
 			}
 		}
-		//return numMap;
-		//important but small :P
-		//rendMap();
+		rendMap();
 	}
 
 	void drawMap(int moveX, int moveY) {
