@@ -59,6 +59,9 @@ public class Funler extends PApplet {
 
 	}
 	
+	/**
+	 * DO NOT USE THIS DRAW LOOP! :D
+	 */
 	public void draw() {
 		timer_stop = millis();
 		int delta_time = timer_stop - timer_start;
@@ -66,6 +69,12 @@ public class Funler extends PApplet {
 		timer_start = millis();
 	}
 
+	/**
+	 * THE NEW AND IMPROVED DRAW LOOP!
+	 * now with delta time! (just like love2d)
+	 * 
+	 * @param dt
+	 */
 	public void draw( float dt ){
 		if (DEBUG) {
 			background(100,200,255);

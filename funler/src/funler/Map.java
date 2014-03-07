@@ -6,7 +6,7 @@ import processing.core.PApplet;
 
 public class Map {
 	PApplet parent;
-	Square [][] sqMap;
+	Tile [][] tileMap;
 	int[][] numMap;
 	
 	int mapX;
@@ -18,7 +18,7 @@ public class Map {
 	Map(int mapX, int mapY, PApplet parent) {
 		this.parent = parent;
 		
-		sqMap = new Square [mapX][mapY];
+		tileMap = new Tile [mapX][mapY];
 		
 		this.mapX = mapX;
 		this.mapY = mapY;
@@ -32,8 +32,8 @@ public class Map {
 	}
 
 	void rand() {
-		for (int i =0; i<sqMap.length; i++) {
-			for (int j =0; j<sqMap[0].length; j++) {
+		for (int i =0; i<tileMap.length; i++) {
+			for (int j =0; j<tileMap[0].length; j++) {
 				int r = (int) Math.random() * 4;
 				if (r == 0) {
 					numMap[i][j] = 1;
@@ -46,13 +46,13 @@ public class Map {
 	}
 
 	void test() {
-		for (int i =0; i<sqMap.length; i++) {
-			for (int j =0; j<sqMap[0].length; j++) {    
+		for (int i =0; i<tileMap.length; i++) {
+			for (int j =0; j<tileMap[0].length; j++) {    
 				if (numMap[i][j] == 0) {
-					sqMap[i][j] = new Square(0);
+					tileMap[i][j] = new Tile(0);
 				} 
 				else {
-					sqMap[i][j] = new Square(1);
+					tileMap[i][j] = new Tile(1);
 				}
 			}
 		}
@@ -76,12 +76,12 @@ public class Map {
 		int row=0;
 		int col=0;
 		for (int i =0; i<s; i++) {
-			if (i%sqMap.length == 0) {
-				row = i/sqMap.length;
+			if (i%tileMap.length == 0) {
+				row = i/tileMap.length;
 				col = 0;
 			} 
 			else {
-				col = i%sqMap.length;
+				col = i%tileMap.length;
 			}
 
 			int[] nextTo = listType.get(i);
@@ -103,7 +103,7 @@ public class Map {
 			for (int k=-1; k<2; k++) {
 				int in = e+j;
 				int jn = a+k;
-				if (in <0 || jn <0 || in>=sqMap.length || jn>=sqMap[0].length) {
+				if (in <0 || jn <0 || in>=tileMap.length || jn>=tileMap[0].length) {
 					count++;
 				}
 				else if (numMap[in][jn] != 0) {
@@ -174,10 +174,10 @@ public class Map {
 			for (int j =0 ; j<mapY; j+=2) {
 				int r = (int)Math.random() * 4;
 				if (r == 0) {
-					sqMap[i][j] = new Square(1);
-					sqMap[i+1][j] = new Square(1);
-					sqMap[i][j+1] = new Square(1);
-					sqMap[i+1][j+1] = new Square(1);
+					tileMap[i][j] = new Tile(1);
+					tileMap[i+1][j] = new Tile(1);
+					tileMap[i][j+1] = new Tile(1);
+					tileMap[i+1][j+1] = new Tile(1);
 
 					numMap[i][j] = 1;
 					numMap[i+1][j] = 1;
@@ -185,10 +185,10 @@ public class Map {
 					numMap[i+1][j+1] = 1;
 				} 
 				else {
-					sqMap[i][j]= new Square(0);
-					sqMap[i+1][j]= new Square(0);
-					sqMap[i][j+1]= new Square(0);
-					sqMap[i+1][j+1]= new Square(0);
+					tileMap[i][j]= new Tile(0);
+					tileMap[i+1][j]= new Tile(0);
+					tileMap[i][j+1]= new Tile(0);
+					tileMap[i+1][j+1]= new Tile(0);
 
 					numMap[i][j] = 0;
 					numMap[i+1][j] = 0;
@@ -203,8 +203,8 @@ public class Map {
 	}
 
 	void drawMap(int moveX, int moveY) {
-		for (int i=0; i<sqMap.length; i++) {
-			for (int j=0; j<sqMap[i].length; j++) {
+		for (int i=0; i<tileMap.length; i++) {
+			for (int j=0; j<tileMap[i].length; j++) {
 				parent.fill(100, 50, 50);
 				if (numMap[i][j] == 0) {
 					//end of map check
@@ -212,13 +212,13 @@ public class Map {
 						if (i == 0) {
 							//image(pic.left(), 50*i+moveX, 50*j+moveY);
 						} 
-						else if (j == sqMap[i].length-1) {
+						else if (j == tileMap[i].length-1) {
 							//image(pic.up(), 50*i+moveX, 50*j+moveY);
 						} 
 						else if (j == 0) {
 							//image(pic.down(), 50*i+moveX, 50*j+moveY);
 						} 
-						else if (i == sqMap.length-1) {
+						else if (i == tileMap.length-1) {
 							//image(pic.right(), 50*i+moveX, 50*j+moveY);
 						}
 						else {
@@ -248,13 +248,13 @@ public class Map {
 		parent.noStroke();
 		//minimap scale
 		float sc;
-		if (sqMap.length >= 200) {
+		if (tileMap.length >= 200) {
 			sc = 1;
 		} 
-		else if (sqMap.length >= 100) {
+		else if (tileMap.length >= 100) {
 			sc = 2.5f;
 		}
-		else if (sqMap.length >= 25) {
+		else if (tileMap.length >= 25) {
 			sc = 5;
 		} 
 		else {
@@ -262,20 +262,20 @@ public class Map {
 		}
 
 		parent.fill(50, 150, 50);
-		for (int i=0; i<sqMap.length; i++) {
-			for (int j=0; j<sqMap[i].length; j++) {
+		for (int i=0; i<tileMap.length; i++) {
+			for (int j=0; j<tileMap[i].length; j++) {
 				if (numMap[i][j] != 1) {
-					parent.rect(parent.width-sqMap.length*sc+(i*sc), j*sc, sc, sc);
+					parent.rect(parent.width-tileMap.length*sc+(i*sc), j*sc, sc, sc);
 				}
 			}
 		}
 		parent.fill(255);
 		// reduse moveX to one intervall at the time.
-		float miniX = (moveX-parent.width/2+sqMap.length*50/2)/10;
-		float miniY = (moveY-parent.height/2+sqMap[0].length*50/2)/10;
+		float miniX = (moveX-parent.width/2+tileMap.length*50/2)/10;
+		float miniY = (moveY-parent.height/2+tileMap[0].length*50/2)/10;
 		miniX = miniX*sc/5;
 		miniY = miniY*sc/5;
-		parent.rect(parent.width-(sqMap.length*sc)/2-miniX, (sqMap[0].length*sc)/2-miniY, sc, sc);
+		parent.rect(parent.width-(tileMap.length*sc)/2-miniX, (tileMap[0].length*sc)/2-miniY, sc, sc);
 		parent.stroke(1);
 	}
 }
