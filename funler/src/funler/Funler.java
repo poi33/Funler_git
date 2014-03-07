@@ -7,8 +7,15 @@ public class Funler extends PApplet {
 	// Mutal size... both partly implemented
 	public int[][] numMap = new int[50][50];
 
+	public static final boolean DEBUG = false;
+
+	public static final int TEXT_SIZE = 22;
+
 	private int moveX = 0;
 	private int moveY = 0;
+
+	private int timer_start = 0;
+	private int timer_stop = 0;
 
 	GodMode mode;
 	Map mapc;
@@ -21,7 +28,9 @@ public class Funler extends PApplet {
 
 	public void setup() {
 		size(displayWidth, displayHeight);
-		// size(300, 300);
+
+		textSize(TEXT_SIZE);
+
 		colorMode(RGB);
 		frameRate(50);
 
@@ -47,9 +56,26 @@ public class Funler extends PApplet {
 		}
 
 		restart = millis();
+
+	}
+	
+	public void draw() {
+		timer_stop = millis();
+		int delta_time = timer_stop - timer_start;
+		draw( delta_time / 1000f );
+		timer_start = millis();
 	}
 
-	public void draw() {
+	public void draw( float dt ){
+		if (DEBUG) {
+			background(100,200,255);
+			
+			println(dt);
+			
+			text(frameRate, width - (5*TEXT_SIZE), height - TEXT_SIZE);
+			return;
+		}
+
 		the_time = millis();
 		clock = (the_time - restart) / 1000;
 		// PImage back = pic.backg();
@@ -88,7 +114,7 @@ public class Funler extends PApplet {
 			mode.showAll(moveX, moveY);
 		}
 	}
-	
+
 	int[][] getNumMap() {
 		return numMap;
 	}
@@ -167,7 +193,7 @@ public class Funler extends PApplet {
 					moveX += val;
 				}
 			}
-		}
+		}	
 	}
 
 	public static void main(String _args[]) {
