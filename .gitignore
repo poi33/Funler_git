@@ -1,5 +1,6 @@
-**.settings/
+**/.settings
 
+#java classes#
 *.class
 
 # Mobile Tools for Java (J2ME)
