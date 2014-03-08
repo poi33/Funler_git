@@ -8,9 +8,9 @@ public class GodMode {
 		this.parent = parent;
 	}
 	
-	void showAll(int moveX, int moveY, int[][] numMap) {
-		float mapX = numMap.length;
-		float mapY = numMap[0].length; 
+	void showAll(int moveX, int moveY, Tile[][] tileMap) {
+		float mapX = tileMap.length;
+		float mapY = tileMap[0].length; 
 
 		for (int i=(int)mapX-1; i>0; i--) {
 			for (int j=(int)mapY-1; j>0; j--) {
@@ -20,7 +20,7 @@ public class GodMode {
 				parent.textSize(10);
 				parent.text(we, 50*(i-1)+moveX, 50*(j-1)+moveY+50);
 				parent.popStyle();
-				if (numMap[i][j] == 1) {
+				if (tileMap[i][j].getType() == 1) {
 					if (50*(i+1)+moveX > 0 && 50*(j+1)+moveY >=0 && 50*i+moveX <parent.width && 50*j + moveY <parent.height) {
 						float dx = mapX*50-parent.width/2;
 						float dy = mapY*50-parent.height/2;
@@ -36,8 +36,6 @@ public class GodMode {
 				}
 			}
 		}
-		//For viewing where enemys can move (not path finding)
-		//enemy[0].canHit();
 	}
 
 }
