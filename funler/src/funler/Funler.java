@@ -1,6 +1,7 @@
 package funler;
 
 import processing.core.PApplet;
+import processing.event.KeyEvent;
 
 /**
  * 
@@ -13,14 +14,13 @@ import processing.core.PApplet;
  *         Debug mode is set here and used for error and faults if may occur.
  *         This mode is not yet done.
  * 
- * @param void
  */
 public class Funler extends PApplet {
 
-	public int mapWidth = 550;
-	public int mapHeight = 550;
+	public int mapWidth = 50;
+	public int mapHeight = 50;
 
-	public static final boolean DEBUG = false;
+	public static boolean  DEBUG = false;
 
 	public static final int TEXT_SIZE = 22;
 
@@ -36,11 +36,10 @@ public class Funler extends PApplet {
 	int clock;
 	int the_time;
 	int restart = 0;
-	
+
 	boolean beg = false;
-	boolean debug = false;
-	
-	//keyValues
+
+	// keyValues
 	int moveSpeed = 50;
 
 	public void setup() {
@@ -54,9 +53,9 @@ public class Funler extends PApplet {
 		mapc = new Map(mapWidth, mapHeight, this);
 
 		restart = millis();
-		
-		moveX = width/2-50;
-	    moveY = height/2-50;
+
+		moveX = width / 2 - 50;
+		moveY = height / 2 - 50;
 
 	}
 
@@ -80,68 +79,56 @@ public class Funler extends PApplet {
 		if (DEBUG) {
 			background(100, 200, 255);
 
-			println(dt);
+			// println(dt);
 
 			text(frameRate, width - (5 * TEXT_SIZE), height - TEXT_SIZE);
+
+			if (mode == null) {
+				mode = new GodMode(this);
+			}
+			mode.showAll(moveX, moveY, mapc.getTileMap());
+			fill(255);
+			Tile player = mapc.getCurrentTile(moveX, moveY);
+				//println(player.getX()+  " || "+ player.getY());
+			
 			return;
 		}
 
 		the_time = millis();
 		clock = (the_time - restart) / 1000;
-		// PImage back = pic.backg();
-		// back.resize(width, height);
+		
 		background(0);
 		noStroke();
 		mapc.drawMap(moveX, moveY);
-		
-		text(clock, 50, 50);	
-		
-		//The super player
+
+		fill(255);
+		text(clock, 50, 50);
+
+		// The super player
 		fill(255);
 		rect(width / 2, height / 2, 50, 50);
-		
-		mapc.miniMap(moveX, moveY);
 
-		if (debug == true) {
-			if (mode == null) {
-				mode = new GodMode(this);
-			}
-			mode.showAll(moveX, moveY, mapc.getTileMap());
-		}
+		mapc.miniMap(moveX, moveY);
 	}
 
 	public boolean sketchFullScreen() {
-		return true;
-		// return false;
+		//return true;
+		return false;
 	}
 
 	public void keyPressed() {
-		if (key == ESC) {
-			if (debug == true) {
-				println("Debugg mode off");
-				debug = false;
-			} else {
-				println("Debugg mode on");
-				debug = true;
-			}
-			key = 0;
-		} else if (key == 32) {
-			exit();
-		}
-
-
 		if (key == CODED) {
 			if (keyCode == UP && moveY < height / 2 - 50) {
 				if (mapc.mapHit(moveX, moveY + moveSpeed) == false) {
 					moveY += moveSpeed;
 				}
 			}
-			if (keyCode == DOWN ) {
+			if (keyCode == DOWN) {
 				if (mapc.mapHit(moveX, moveY - moveSpeed) == false) {
 					moveY -= moveSpeed;
 				}
 			}
-			if (keyCode == RIGHT ) {
+			if (keyCode == RIGHT) {
 				if (mapc.mapHit(moveX - moveSpeed, moveY) == false) {
 					moveX -= moveSpeed;
 				}
@@ -151,6 +138,9 @@ public class Funler extends PApplet {
 					moveX += moveSpeed;
 				}
 			}
+		}
+		if (keyCode ==  120 || key == DELETE) {
+			DEBUG = DEBUG ? false : true;
 		}
 	}
 

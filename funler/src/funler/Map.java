@@ -26,6 +26,24 @@ public class Map {
 		return tileMap;
 	}
 
+	Tile getCurrentTile(int moveX, int moveY) {
+		for (int i = mapX; i > 0; i--) {
+			float dx = mapX * 50 - parent.width / 2;
+			if ((mapX - i) * 50 - dx - 49 <= moveX
+					&& (mapX - i) * 50 + 49 - dx >= moveX)
+				for (int j = mapY; j > 0; j--) {
+					float dy = mapY * 50 - parent.height / 2;
+					if (mapY * 50 - j * 50 - dy - 49 <= moveY
+							&& mapY * 50 - j * 50 + 49 - dy >= moveY) {
+						return tileMap[i][j];
+					}
+				}
+		}
+		System.out
+				.println("Error in getCurrentTile.\nProbebly moved outside the playable area");
+		return null;
+	}
+
 	/***
 	 * Random generated tiles
 	 */
@@ -78,11 +96,15 @@ public class Map {
 
 	void drawMap(int moveX, int moveY) {
 		for (int i = 0; i < mapX; i++) {
-			if (i*50+moveX > parent.width-100) continue;
-			if (i*50+moveX < 50) continue;
+			if (i * 50 + moveX > parent.width - 100)
+				continue;
+			if (i * 50 + moveX < 50)
+				continue;
 			for (int j = 0; j < mapY; j++) {
-				if (j*50+moveY > parent.height-50) break;
-				if (j*50+moveY < 0) continue;
+				if (j * 50 + moveY > parent.height - 50)
+					break;
+				if (j * 50 + moveY < 0)
+					continue;
 				if (tileMap[i][j].getType() == 0) {
 					parent.fill(99, 79, 14);
 				} else {

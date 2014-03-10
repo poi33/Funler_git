@@ -15,21 +15,21 @@ package funler;
 public class Tile {
 	// What type the square is. 0 = wall, 1 = (current) default tile, 2 = void;
 	private int type;
-	private int xcor;
-	private int ycor;
+	private int x;
+	private int y;
 
 	Tile(int x, int y, int type) {
 		this.type = type;
-		this.xcor = x;
-		this.ycor = y;
+		this.x = x;
+		this.y = y;
 	}
 
 	int getX() {
-		return xcor;
+		return x;
 	}
 
 	int getY() {
-		return ycor;
+		return y;
 	}
 
 	int getType() {

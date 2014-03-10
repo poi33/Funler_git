@@ -24,11 +24,11 @@ public class GodMode {
 					if (50*(i+1)+moveX > 0 && 50*(j+1)+moveY >=0 && 50*i+moveX <parent.width && 50*j + moveY <parent.height) {
 						float dx = mapX*50-parent.width/2;
 						float dy = mapY*50-parent.height/2;
-						if ((mapX-i)*50-dx-49 <= (int)moveX && (mapX-i)*50+49-dx >= (int)moveX) {
+						if ((mapX-i)*50-dx-49 <= moveX && (mapX-i)*50+49-dx >= moveX) {
 							parent.fill(50, 50, 200);
 							parent.rect(i*50+moveX, j*50+moveY, 30, 30);
 						}
-						if (mapY*50-j*50-dy-49 <= (int)moveY && mapY*50-j*50+49-dy >= (int) moveY) {
+						if (mapY*50-j*50-dy-49 <= moveY && mapY*50-j*50+49-dy >= moveY) {
 							parent.fill(200, 50, 50);
 							parent.rect(i*50+moveX, j*50+moveY, 40, 40);
 						}
