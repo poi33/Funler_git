@@ -2,7 +2,7 @@ package funler;
 
 import processing.core.PApplet;
 
-abstract class Map {
+abstract class Map implements MapGenerator {
 	PApplet parent;
 	Tile[][] tileMap;
 

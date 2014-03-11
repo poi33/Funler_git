@@ -16,9 +16,6 @@ import processing.core.PApplet;
  */
 public class Funler extends PApplet {
 
-	public int mapWidth = 50;
-	public int mapHeight = 50;
-
 	public static boolean  DEBUG = false;
 
 	public static final int TEXT_SIZE = 22;
@@ -49,12 +46,13 @@ public class Funler extends PApplet {
 		colorMode(RGB);
 		frameRate(60);
 
-		mapc = new MapGen(mapWidth, mapHeight, this);
+		//Decide the size of the map here now
+		mapc = new CaveGen(50, 50, this);
 
 		restart = millis();
 
-		moveX = width / 2 - 50;
-		moveY = height / 2 - 50;
+		moveX = width / 2 - 500;
+		moveY = height / 2 - 500;
 
 	}
 
@@ -135,9 +133,10 @@ public class Funler extends PApplet {
 				}
 			}
 		}
-		if (keyCode ==  120 || key == DELETE) {
+		if (key == 'r' || key == 'R')
+			mapc.generateNew();
+		if (keyCode ==  120 || key == DELETE)
 			DEBUG = DEBUG ? false : true;
-		}
 	}
 
 	public static void main(String _args[]) {
