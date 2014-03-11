@@ -31,7 +31,7 @@ public class Funler extends PApplet {
 	private int timer_stop = 0;
 
 	GodMode mode;
-	Map mapc;
+	MapGenerator mapc;
 
 	int clock;
 	int the_time;
@@ -50,7 +50,8 @@ public class Funler extends PApplet {
 		colorMode(RGB);
 		frameRate(60);
 
-		mapc = new Map(mapWidth, mapHeight, this);
+		mapc = ProceduralMapGenerator.genMap();
+		//mapc = new Map(mapWidth, mapHeight, this);
 
 		restart = millis();
 
@@ -76,12 +77,18 @@ public class Funler extends PApplet {
 	 * @param dt
 	 */
 	public void draw(float dt) {
+		mapc.drawMap(moveX, moveY);
+		
+		// The super player
+		fill(255);
+		rect(width / 2, height / 2, 50, 50);
+
 		if (DEBUG) {
-			background(100, 200, 255);
+			//background(100, 200, 255);
 
 			// println(dt);
 
-			text(frameRate, width - (5 * TEXT_SIZE), height - TEXT_SIZE);
+			text(frameRate, width - (5 * TEXT_SIZE), height - (TEXT_SIZE + 30));
 
 			if (mode == null) {
 				mode = new GodMode(this);
@@ -104,9 +111,6 @@ public class Funler extends PApplet {
 		fill(255);
 		text(clock, 50, 50);
 
-		// The super player
-		fill(255);
-		rect(width / 2, height / 2, 50, 50);
 
 		mapc.miniMap(moveX, moveY);
 	}

@@ -2,7 +2,7 @@ package funler;
 
 import processing.core.PApplet;
 
-public class Map {
+public class Map implements MapGenerator {
 	PApplet parent;
 	Tile[][] tileMap;
 
@@ -12,8 +12,6 @@ public class Map {
 	Map(int mapX, int mapY, PApplet parent) {
 		this.parent = parent;
 
-		tileMap = new Tile[mapX][mapY];
-
 		this.mapX = mapX;
 		this.mapY = mapY;
 
@@ -22,11 +20,19 @@ public class Map {
 
 	}
 
-	Tile[][] getTileMap() {
+	/* (non-Javadoc)
+	 * @see funler.mapGenerator#getTileMap()
+	 */
+	@Override
+	public Tile[][] getTileMap() {
 		return tileMap;
 	}
 
-	Tile getCurrentTile(int moveX, int moveY) {
+	/* (non-Javadoc)
+	 * @see funler.mapGenerator#getCurrentTile(int, int)
+	 */
+	@Override
+	public Tile getCurrentTile(int moveX, int moveY) {
 		for (int i = mapX; i > 0; i--) {
 			float dx = mapX * 50 - parent.width / 2;
 			if ((mapX - i) * 50 - dx - 49 <= moveX
@@ -87,14 +93,12 @@ public class Map {
 		}
 	}
 
-	/****
-	 * Draws the play field / terrain
-	 * 
-	 * @param moveX
-	 * @param moveY
+	/* (non-Javadoc)
+	 * @see funler.mapGenerator#drawMap(int, int)
 	 */
 
-	void drawMap(int moveX, int moveY) {
+	@Override
+	public void drawMap(int moveX, int moveY) {
 		for (int i = 0; i < mapX; i++) {
 			if (i * 50 + moveX > parent.width - 100)
 				continue;
@@ -115,13 +119,11 @@ public class Map {
 		}
 	}
 
-	/**
-	 ** A hit ditection on the map tests if the next move will be in a empty tile
-	 ** 
-	 * @parm xcordinant, ycordinants
-	 ** @return boolean
+	/* (non-Javadoc)
+	 * @see funler.mapGenerator#mapHit(float, float)
 	 */
-	boolean mapHit(float xcor, float ycor) {
+	@Override
+	public boolean mapHit(float xcor, float ycor) {
 		for (int i = mapX - 1; i > 0; i--) {
 			// The player is always in the center of the screen width/2 (this is
 			// what we must calc with).
@@ -143,13 +145,11 @@ public class Map {
 		return false;
 	}
 
-	/***
-	 * Takes in movement and prints out a cool little minimap.
-	 * 
-	 * @param moveX
-	 * @param moveY
+	/* (non-Javadoc)
+	 * @see funler.mapGenerator#miniMap(int, int)
 	 */
-	void miniMap(int moveX, int moveY) {
+	@Override
+	public void miniMap(int moveX, int moveY) {
 		parent.noStroke();
 		// minimap scale
 		float sc;
