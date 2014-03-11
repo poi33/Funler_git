@@ -2,7 +2,7 @@ package funler;
 
 import processing.core.PApplet;
 
-public class Map {
+abstract class Map {
 	PApplet parent;
 	Tile[][] tileMap;
 
@@ -16,9 +16,6 @@ public class Map {
 
 		this.mapX = mapX;
 		this.mapY = mapY;
-
-		randGen();
-		// randomBlock();
 
 	}
 
@@ -43,50 +40,7 @@ public class Map {
 				.println("Error in getCurrentTile.\nProbebly moved outside the playable area");
 		return null;
 	}
-
-	/***
-	 * Random generated tiles
-	 */
-	void randGen() {
-		for (int i = 0; i < mapX; i++) {
-			for (int j = 0; j < mapY; j++) {
-				int r = (int) (Math.random() * 4.0f);
-				if (r == 0) {
-					// tileMap[i][j] = new Tile(i, j, 1);
-					tileMap[i][j] = new Tile(i, j, 1);
-				} else {
-					tileMap[i][j] = new Tile(i, j, 0);
-				}
-			}
-		}
-	}
-
-	/***
-	 * Random generated tiles (in blocks not singles)
-	 */
-
-	void randomBlock() {
-		// map generate (int map)
-		for (int i = 0; i < mapX; i += 2) {
-			for (int j = 0; j < mapY; j += 2) {
-				int r = (int) Math.random() * 4;
-				if (r == 0) {
-					tileMap[i][j] = new Tile(i, j, 1);
-					tileMap[i + 1][j] = new Tile(i + 1, j, 1);
-					tileMap[i][j + 1] = new Tile(i, j + 1, 1);
-					tileMap[i + 1][j + 1] = new Tile(i + 1, j + 1, 1);
-
-				} else {
-					tileMap[i][j] = new Tile(i, j, 0);
-					tileMap[i + 1][j] = new Tile(i + 1, j, 0);
-					tileMap[i][j + 1] = new Tile(i, j + 1, 0);
-					tileMap[i + 1][j + 1] = new Tile(i + 1, j + 1, 0);
-
-				}
-			}
-		}
-	}
-
+	
 	/****
 	 * Draws the play field / terrain
 	 * 
