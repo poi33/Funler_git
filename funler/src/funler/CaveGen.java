@@ -7,7 +7,7 @@ public class CaveGen extends Map {
 	CaveGen(int mapX, int mapY, PApplet parent) {
 		super(mapX, mapY, parent);
 
-		randGen();
+		//randGen();
 		mapWidth = mapX;
 		mapHeight = mapY;
 		percentAreWalls = 40;
@@ -153,7 +153,6 @@ public class CaveGen extends Map {
 			for (int j = 0; j < mapY; j++) {
 				int r = (int) (Math.random() * 4.0f);
 				if (r == 0) {
-					// tileMap[i][j] = new Tile(i, j, 1);
 					tileMap[i][j] = new Tile(i, j, 1);
 				} else {
 					tileMap[i][j] = new Tile(i, j, 0);
