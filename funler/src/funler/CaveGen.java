@@ -4,8 +4,8 @@ import processing.core.PApplet;
 
 public class CaveGen extends Map {
 
-	CaveGen(int mapX, int mapY, PApplet parent) {
-		super(mapX, mapY, parent);
+	CaveGen(int mapX, int mapY, int tile_size, PApplet parent) {
+		super(mapX, mapY, tile_size, parent);
 
 		//randGen();
 		mapWidth = mapX;
@@ -33,8 +33,8 @@ public class CaveGen extends Map {
 	int placeWallLogic(int x, int y) {
 		int numWalls = GetAdjacentWalls(x, y, 1, 1);
 		
-		//Is wall
 		if (tileMap[x][y].getType() == 1) {
+			//Is wall
 			if (numWalls >= 4) {
 				return 1;
 			}
@@ -116,7 +116,7 @@ public class CaveGen extends Map {
 				// If coordinants lie on the the edge of the map (creates a
 				// border)
 				if (column == 0) {
-					tileMap[column][row].setType( 1);
+					tileMap[column][row].setType(1);
 				} else if (row == 0) {
 					tileMap[column][row].setType(1);
 				} else if (column == mapWidth - 1) {
@@ -128,7 +128,7 @@ public class CaveGen extends Map {
 				else {
 					mapMiddle = (mapHeight / 2);
 
-					if (row == mapMiddle) {
+					if (row == mapMiddle && column == mapMiddle) {
 						tileMap[column][row].setType(0);
 					} else {
 						tileMap[column][row].setType(randomPercent(percentAreWalls));
@@ -139,7 +139,7 @@ public class CaveGen extends Map {
 	}
 
 	int randomPercent(int percent) {
-		if (percent >= 1 + Math.random() * 101) {
+		if (percent >= Math.random() * 100) {
 			return 1;
 		}
 		return 0;

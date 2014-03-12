@@ -1,29 +1,48 @@
 package funler;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 
 abstract class Map implements MapGenerator {
 	PApplet parent;
 	Tile[][] tileMap;
 
-	int mapX;
-	int mapY;
+	public static int TILE_SIZE;
 
-	Map(int mapX, int mapY, PApplet parent) {
+	PVector mapCurr; // current draw position
+	PVector mapDest; // moving towards
+
+	protected int mapX;
+	protected int mapY;
+	private float moveSpeed = 500;
+
+	Map(int mapX, int mapY, int tile_size, PApplet parent) {
 		this.parent = parent;
 
-		tileMap = new Tile[mapX][mapY];
+		TILE_SIZE = tile_size;
 
+		mapCurr = mapDest = new PVector();
 		this.mapX = mapX;
 		this.mapY = mapY;
 
+		tileMap = new Tile[mapX][mapY];
 	}
 
-	Tile[][] getTileMap() {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see funler.mapGenerator#getTileMap()
+	 */
+	public Tile[][] getTileMap() {
 		return tileMap;
 	}
 
-	Tile getCurrentTile(int moveX, int moveY) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see funler.mapGenerator#getCurrentTile(int, int)
+	 */
+	public Tile getCurrentTile(int moveX, int moveY) {
 		for (int i = mapX; i > 0; i--) {
 			float dx = mapX * 50 - parent.width / 2;
 			if ((mapX - i) * 50 - dx - 49 <= moveX
@@ -40,42 +59,95 @@ abstract class Map implements MapGenerator {
 				.println("Error in getCurrentTile.\nProbebly moved outside the playable area");
 		return null;
 	}
-	
-	/****
-	 * Draws the play field / terrain
-	 * 
-	 * @param moveX
-	 * @param moveY
+
+	/***
+	 * Random generated tiles
+	 */
+	void randGen() {
+		for (int i = 0; i < mapX; i++) {
+			for (int j = 0; j < mapY; j++) {
+				int r = (int) (Math.random() * 4.0f);
+				if (r == 0) {
+					// tileMap[i][j] = new Tile(i, j, 1);
+					tileMap[i][j] = new Tile(i, j, 1);
+				} else {
+					tileMap[i][j] = new Tile(i, j, 0);
+				}
+			}
+		}
+	}
+
+	/***
+	 * Random generated tiles (in blocks not singles)
 	 */
 
-	void drawMap(int moveX, int moveY) {
+	void randomBlock() {
+		// map generate (int map)
+		for (int i = 0; i < mapX; i += 2) {
+			for (int j = 0; j < mapY; j += 2) {
+				int r = (int) Math.random() * 4;
+				if (r == 0) {
+					tileMap[i][j] = new Tile(i, j, 1);
+					tileMap[i + 1][j] = new Tile(i + 1, j, 1);
+					tileMap[i][j + 1] = new Tile(i, j + 1, 1);
+					tileMap[i + 1][j + 1] = new Tile(i + 1, j + 1, 1);
+
+				} else {
+					tileMap[i][j] = new Tile(i, j, 0);
+					tileMap[i + 1][j] = new Tile(i + 1, j, 0);
+					tileMap[i][j + 1] = new Tile(i, j + 1, 0);
+					tileMap[i + 1][j + 1] = new Tile(i + 1, j + 1, 0);
+
+				}
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see funler.mapGenerator#drawMap(int, int)
+	 */
+
+	public void drawMap(PVector newDest, float dt) {
+		mapDest = newDest;
+		PVector vel = new PVector();
+		vel = newDest.get();
+		vel.sub(mapCurr);
+		if(vel.mag() < Map.TILE_SIZE/10){
+			mapCurr = mapDest.get();
+		}
+		else {
+			vel.normalize();
+			vel.mult(moveSpeed * dt);
+			mapCurr.add(vel);
+		}
 		for (int i = 0; i < mapX; i++) {
-			if (i * 50 + moveX > parent.width - 100)
+			if (i * 50 + newDest.x > parent.width - 100)
 				continue;
-			if (i * 50 + moveX < 50)
+			if (i * 50 + newDest.x < 50)
 				continue;
 			for (int j = 0; j < mapY; j++) {
-				if (j * 50 + moveY > parent.height - 50)
+				if (j * 50 + newDest.y > parent.height - 50)
 					break;
-				if (j * 50 + moveY < 0)
+				if (j * 50 + newDest.y < 0)
 					continue;
 				if (tileMap[i][j].getType() == 0) {
 					parent.fill(99, 79, 14);
 				} else {
 					parent.fill(14, 34, 99);
 				}
-				parent.rect(i * 50 + moveX, j * 50 + moveY, 50, 50);
+				parent.rect(i * 50 + mapCurr.x, j * 50 + mapCurr.y, 50, 50);
 			}
 		}
 	}
 
-	/**
-	 ** A hit ditection on the map tests if the next move will be in a empty tile
-	 ** 
-	 * @parm xcordinant, ycordinants
-	 ** @return boolean
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see funler.mapGenerator#mapHit(float, float)
 	 */
-	boolean mapHit(float xcor, float ycor) {
+	public boolean mapHit(float xcor, float ycor) {
 		for (int i = mapX - 1; i > 0; i--) {
 			// The player is always in the center of the screen width/2 (this is
 			// what we must calc with).
@@ -97,13 +169,12 @@ abstract class Map implements MapGenerator {
 		return false;
 	}
 
-	/***
-	 * Takes in movement and prints out a cool little minimap.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param moveX
-	 * @param moveY
+	 * @see funler.mapGenerator#miniMap(int, int)
 	 */
-	void miniMap(int moveX, int moveY) {
+	public void miniMap(int moveX, int moveY) {
 		parent.noStroke();
 		// minimap scale
 		float sc;
