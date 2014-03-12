@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="funler_libgdx-desktop/src"/>
+	<classpathentry kind="src" path="funler_libgdx/src"/>
+	<classpathentry kind="src" path="funler_libgdx-android/assets"/>
+	<classpathentry kind="lib" path="funler_libgdx-android/libs/gdx-backend-android-sources.jar"/>
+	<classpathentry kind="lib" path="funler_libgdx-android/libs/gdx-backend-android.jar"/>
+	<classpathentry kind="lib" path="funler_libgdx-desktop/libs/gdx-backend-lwjgl-natives.jar"/>
+	<classpathentry kind="lib" path="funler_libgdx-desktop/libs/gdx-backend-lwjgl-sources.jar"/>
+	<classpathentry kind="lib" path="funler_libgdx-desktop/libs/gdx-backend-lwjgl.jar"/>
+	<classpathentry kind="lib" path="funler_libgdx-desktop/libs/gdx-natives.jar"/>
+	<classpathentry kind="lib" path="funler_libgdx/libs/gdx-sources.jar"/>
+	<classpathentry kind="lib" path="funler_libgdx/libs/gdx.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
