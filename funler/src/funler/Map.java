@@ -2,7 +2,7 @@ package funler;
 
 import processing.core.PApplet;
 
-public class Map implements MapGenerator {
+abstract class Map {
 	PApplet parent;
 	Tile[][] tileMap;
 
@@ -15,23 +15,22 @@ public class Map implements MapGenerator {
 		this.mapX = mapX;
 		this.mapY = mapY;
 
-		randGen();
-		// randomBlock();
-
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see funler.mapGenerator#getTileMap()
 	 */
-	@Override
 	public Tile[][] getTileMap() {
 		return tileMap;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see funler.mapGenerator#getCurrentTile(int, int)
 	 */
-	@Override
 	public Tile getCurrentTile(int moveX, int moveY) {
 		for (int i = mapX; i > 0; i--) {
 			float dx = mapX * 50 - parent.width / 2;
@@ -93,11 +92,12 @@ public class Map implements MapGenerator {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see funler.mapGenerator#drawMap(int, int)
 	 */
 
-	@Override
 	public void drawMap(int moveX, int moveY) {
 		for (int i = 0; i < mapX; i++) {
 			if (i * 50 + moveX > parent.width - 100)
@@ -119,10 +119,11 @@ public class Map implements MapGenerator {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see funler.mapGenerator#mapHit(float, float)
 	 */
-	@Override
 	public boolean mapHit(float xcor, float ycor) {
 		for (int i = mapX - 1; i > 0; i--) {
 			// The player is always in the center of the screen width/2 (this is
@@ -145,10 +146,11 @@ public class Map implements MapGenerator {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see funler.mapGenerator#miniMap(int, int)
 	 */
-	@Override
 	public void miniMap(int moveX, int moveY) {
 		parent.noStroke();
 		// minimap scale

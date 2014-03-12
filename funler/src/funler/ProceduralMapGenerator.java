@@ -12,6 +12,8 @@ import processing.core.PApplet;
  */
 public class ProceduralMapGenerator extends Map {
 	ProceduralMapGenerator(int mapX, int mapY, PApplet parent) {
+		super(mapX, mapY, parent);
+		
 		this.parent = parent;
 
 		this.mapX = mapX;
