@@ -1,6 +1,7 @@
 package funler;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 
 /**
  * 
@@ -15,9 +16,6 @@ import processing.core.PApplet;
  * 
  */
 public class Funler extends PApplet {
-
-	public int mapWidth = 50;
-	public int mapHeight = 50;
 
 	public static boolean  DEBUG = false;
 
@@ -38,8 +36,7 @@ public class Funler extends PApplet {
 
 	boolean beg = false;
 
-	// keyValues
-	int moveSpeed = 50;
+	private int moveSpeed = 50;
 
 	public void setup() {
 		size(displayWidth, displayHeight);
@@ -49,15 +46,17 @@ public class Funler extends PApplet {
 		colorMode(RGB);
 		frameRate(60);
 
-		mapc = new ProceduralMapGenerator(mapWidth, mapHeight, this);
+		//mapc = new ProceduralMapGenerator(mapWidth, mapHeight, this);
 
 		//mapc = new MapGen(mapWidth, mapHeight, this);
 
+		//Decide the size of the map here now
+		mapc = new CaveGen(49, 49, 50, this);
+
 		restart = millis();
 
-		moveX = width / 2 - 50;
-		moveY = height / 2 - 50;
-
+		moveX = - mapc.mapX/2 *Map.TILE_SIZE + width/2;
+		moveY = - mapc.mapY/2 *Map.TILE_SIZE + height/2;
 	}
 
 	/**
@@ -77,11 +76,11 @@ public class Funler extends PApplet {
 	 * @param dt
 	 */
 	public void draw(float dt) {
-		mapc.drawMap(moveX, moveY);
+		mapc.drawMap(new PVector(moveX, moveY), dt);
 		
 		// The super player
 		fill(255);
-		rect(width / 2, height / 2, 50, 50);
+		rect(width / 2, height / 2, Map.TILE_SIZE, Map.TILE_SIZE);
 
 		if (DEBUG) {
 			//background(100, 200, 255);
@@ -103,7 +102,7 @@ public class Funler extends PApplet {
 		
 		background(0);
 		noStroke();
-		mapc.drawMap(moveX, moveY);
+		mapc.drawMap(new PVector(moveX, moveY), dt);
 
 		fill(255);
 		text(clock, 50, 50);
@@ -123,7 +122,7 @@ public class Funler extends PApplet {
 	public void keyPressed() {
 		if (key == CODED) {
 			if (keyCode == UP && moveY < height / 2 - 50) {
-				if (mapc.mapHit(moveX, moveY + moveSpeed) == false) {
+				if (mapc.mapHit(moveX, moveY + moveSpeed ) == false) {
 					moveY += moveSpeed;
 				}
 			}
@@ -143,9 +142,10 @@ public class Funler extends PApplet {
 				}
 			}
 		}
-		if (keyCode ==  120 || key == DELETE) {
+		if (key == 'r' || key == 'R')
+			mapc.generateNew();
+		if (keyCode ==  120 || key == DELETE)
 			DEBUG = DEBUG ? false : true;
-		}
 	}
 
 	public static void main(String _args[]) {

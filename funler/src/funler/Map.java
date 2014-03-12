@@ -1,20 +1,31 @@
 package funler;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 
-abstract class Map {
+abstract class Map implements MapGenerator {
 	PApplet parent;
 	Tile[][] tileMap;
 
-	int mapX;
-	int mapY;
+	public static int TILE_SIZE;
 
-	Map(int mapX, int mapY, PApplet parent) {
+	PVector mapCurr; // current draw position
+	PVector mapDest; // moving towards
+
+	protected int mapX;
+	protected int mapY;
+	private float moveSpeed = 500;
+
+	Map(int mapX, int mapY, int tile_size, PApplet parent) {
 		this.parent = parent;
 
+		TILE_SIZE = tile_size;
+
+		mapCurr = mapDest = new PVector();
 		this.mapX = mapX;
 		this.mapY = mapY;
 
+		tileMap = new Tile[mapX][mapY];
 	}
 
 	/*
@@ -98,23 +109,35 @@ abstract class Map {
 	 * @see funler.mapGenerator#drawMap(int, int)
 	 */
 
-	public void drawMap(int moveX, int moveY) {
+	public void drawMap(PVector newDest, float dt) {
+		mapDest = newDest;
+		PVector vel = new PVector();
+		vel = newDest.get();
+		vel.sub(mapCurr);
+		if(vel.mag() < Map.TILE_SIZE/10){
+			mapCurr = mapDest.get();
+		}
+		else {
+			vel.normalize();
+			vel.mult(moveSpeed * dt);
+			mapCurr.add(vel);
+		}
 		for (int i = 0; i < mapX; i++) {
-			if (i * 50 + moveX > parent.width - 100)
+			if (i * 50 + newDest.x > parent.width - 100)
 				continue;
-			if (i * 50 + moveX < 50)
+			if (i * 50 + newDest.x < 50)
 				continue;
 			for (int j = 0; j < mapY; j++) {
-				if (j * 50 + moveY > parent.height - 50)
+				if (j * 50 + newDest.y > parent.height - 50)
 					break;
-				if (j * 50 + moveY < 0)
+				if (j * 50 + newDest.y < 0)
 					continue;
 				if (tileMap[i][j].getType() == 0) {
 					parent.fill(99, 79, 14);
 				} else {
 					parent.fill(14, 34, 99);
 				}
-				parent.rect(i * 50 + moveX, j * 50 + moveY, 50, 50);
+				parent.rect(i * 50 + mapCurr.x, j * 50 + mapCurr.y, 50, 50);
 			}
 		}
 	}
