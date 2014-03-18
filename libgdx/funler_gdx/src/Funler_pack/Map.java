@@ -1,5 +1,6 @@
 package Funler_pack;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -8,12 +9,12 @@ abstract class Map implements MapGenerator {
 
 	private ShapeRenderer sr;
 
-	Tile[][] tileMap;
+	protected Tile[][] tileMap;
 
 	public static int TILE_SIZE;
 
-	Vector2 mapCurr; // current draw position
-	Vector2 mapDest; // moving towards
+	private Vector2 mapCurr; // current draw position
+	private Vector2 mapDest; // moving towards
 
 	protected int mapX;
 	protected int mapY;
@@ -46,11 +47,11 @@ abstract class Map implements MapGenerator {
 	 */
 	public Tile getCurrentTile(int moveX, int moveY) {
 		for (int i = mapX; i > 0; i--) {
-			float dx = mapX * 50 - Funler.W / 2;
+			float dx = mapX * 50 - Funler.w / 2;
 			if ((mapX - i) * 50 - dx - 49 <= moveX
 					&& (mapX - i) * 50 + 49 - dx >= moveX)
 				for (int j = mapY; j > 0; j--) {
-					float dy = mapY * 50 - Funler.H / 2;
+					float dy = mapY * 50 - Funler.h / 2;
 					if (mapY * 50 - j * 50 - dy - 49 <= moveY
 							&& mapY * 50 - j * 50 + 49 - dy >= moveY) {
 						return tileMap[i][j];
@@ -111,7 +112,7 @@ abstract class Map implements MapGenerator {
 	 * @see funler.mapGenerator#drawMap(int, int)
 	 */
 
-	public void drawMap(Vector2 newDest, float dt) {
+	public void drawMap(Vector2 newDest) {
 		sr.begin(ShapeType.Filled);
 
 		mapDest = newDest;
@@ -122,23 +123,23 @@ abstract class Map implements MapGenerator {
 			mapCurr = mapDest.cpy();
 		} else {
 			vel.nor();
-			vel.scl(moveSpeed * dt);
+			vel.scl(moveSpeed * Gdx.graphics.getDeltaTime());
 			mapCurr.add(vel);
 		}
 		for (int i = 0; i < mapX; i++) {
-			if (i * 50 + newDest.x > Funler.W - 100)
+			if (i * 50 + newDest.x > Funler.w - 100)
 				continue;
 			if (i * 50 + newDest.x < 50)
 				continue;
 			for (int j = 0; j < mapY; j++) {
-				if (j * 50 + newDest.y > Funler.H - 50)
+				if (j * 50 + newDest.y > Funler.h - 50)
 					break;
 				if (j * 50 + newDest.y < 0)
 					continue;
 				if (tileMap[i][j].getType() == 0) {
-					sr.setColor(99, 79, 14, 255);
+					sr.setColor(99, 79, 14, 1);
 				} else {
-					sr.setColor(14, 37, 99, 255);
+					sr.setColor(14, 37, 99, 1);
 				}
 				sr.rect(i * 50 + mapCurr.x, j * 50 + mapCurr.y, 50, 50);
 			}
@@ -156,12 +157,12 @@ abstract class Map implements MapGenerator {
 		for (int i = mapX - 1; i > 0; i--) {
 			// The player is always in the center of the screen width/2 (this is
 			// what we must calc with).
-			float dx = mapX * 50 - Funler.W / 2;
+			float dx = mapX * 50 - Funler.w / 2;
 			if ((mapX - i) * 50 - dx - 49 <= xcor
 					&& (mapX - i) * 50 + 49 - dx >= xcor) {
 				for (int j = mapY - 1; j > 0; j--) {
 					if (tileMap[i][j].getType() == 1) {
-						float dy = mapY * 50 - Funler.H / 2;
+						float dy = mapY * 50 - Funler.h / 2;
 
 						if (mapY * 50 - j * 50 - dy - 49 <= ycor
 								&& mapY * 50 - j * 50 + 49 - dy >= ycor) {
@@ -193,11 +194,11 @@ abstract class Map implements MapGenerator {
 			sc = 10;
 		}
 
-		sr.setColor(50, 150, 50, 255);
+		sr.setColor(50, 150, 50, 1);
 		for (int i = 0; i < tileMap.length; i++) {
 			for (int j = 0; j < tileMap[i].length; j++) {
 				if (tileMap[i][j].getType() != 1) {
-					sr.rect(Funler.W - tileMap.length * sc + (i * sc), j * sc,
+					sr.rect(Funler.w - tileMap.length * sc + (i * sc), j * sc,
 							sc, sc);
 				}
 			}
@@ -205,11 +206,11 @@ abstract class Map implements MapGenerator {
 
 		sr.setColor(255, 255, 255, 255);
 		// reduse moveX to one intervall at the time.
-		float miniX = (moveX - Funler.W / 2 + tileMap.length * 50 / 2) / 10;
-		float miniY = (moveY - Funler.H / 2 + tileMap[0].length * 50 / 2) / 10;
+		float miniX = (moveX - Funler.w / 2 + tileMap.length * 50 / 2) / 10;
+		float miniY = (moveY - Funler.h / 2 + tileMap[0].length * 50 / 2) / 10;
 		miniX = miniX * sc / 5;
 		miniY = miniY * sc / 5;
-		sr.rect(Funler.W - (tileMap.length * sc) / 2 - miniX,
+		sr.rect(Funler.w - (tileMap.length * sc) / 2 - miniX,
 				(tileMap[0].length * sc) / 2 - miniY, sc, sc);
 
 		sr.end();

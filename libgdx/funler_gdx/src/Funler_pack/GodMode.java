@@ -33,10 +33,10 @@ public class GodMode {
 				
 				if (tileMap[i][j].getType() == 1) {
 					if (50 * (i + 1) + moveX > 0 && 50 * (j + 1) + moveY >= 0
-							&& 50 * i + moveX < Funler.W
-							&& 50 * j + moveY < Funler.H) {
-						float dx = mapX * 50 - Funler.W / 2;
-						float dy = mapY * 50 - Funler.H / 2;
+							&& 50 * i + moveX < Funler.w
+							&& 50 * j + moveY < Funler.h) {
+						float dx = mapX * 50 - Funler.w / 2;
+						float dy = mapY * 50 - Funler.h / 2;
 						if ((mapX - i) * 50 - dx - 49 <= moveX
 								&& (mapX - i) * 50 + 49 - dx >= moveX) {
 							
