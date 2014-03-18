@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Funler implements ApplicationListener {
-	public static int W = Gdx.graphics.getWidth();
-	public static int H = Gdx.graphics.getHeight();
+	public static int W;
+	public static int H;
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -46,14 +46,14 @@ public class Funler implements ApplicationListener {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		int w = Gdx.graphics.getWidth();
-		int h = Gdx.graphics.getHeight();
+		W = Gdx.graphics.getWidth();
+		H = Gdx.graphics.getHeight();
 		
 		ShapeRenderer shapeRenderer = new ShapeRenderer();
 		shapeRenderer.begin(ShapeType.Filled);
 		 shapeRenderer.setColor(0, 0, 0, 1);
 		 //shapeRenderer.line(100, 100, 60, 60);
-		 shapeRenderer.rect(w/2, h/2, 300, 300);
+		 shapeRenderer.rect(W/2, H/2, 300, 300);
 		 shapeRenderer.end();
 		
 		batch.setProjectionMatrix(camera.combined);

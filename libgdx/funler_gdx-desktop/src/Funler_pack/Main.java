@@ -1,8 +1,7 @@
+package Funler_pack;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
-import Funler_pack.Funler;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
