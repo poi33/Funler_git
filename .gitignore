@@ -1,7 +1,6 @@
 **/bin/
-
 **/.settings/
-
+*.classpath
 #java classes#
 *.class
 
