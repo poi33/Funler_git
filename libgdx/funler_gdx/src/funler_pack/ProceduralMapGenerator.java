@@ -1,4 +1,4 @@
-package Funler_pack;
+package funler_pack;
 
 /**
  * This class will create grid based maps procedurally!

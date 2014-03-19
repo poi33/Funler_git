@@ -1,9 +1,7 @@
-package Funler_pack;
+package funler_pack;
 
 import utils.HexColor;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -17,11 +15,14 @@ abstract class Map implements MapGenerator {
 	public static int TILE_SIZE;
 
 	private Vector2 mapCurr; // current draw position
-	private Vector2 mapDest; // moving towards
+	public Vector2 mapDest; // moving towards
 
 	protected int mapX;
 	protected int mapY;
 	private float moveSpeed = 500;
+
+	public int playerX;
+	public int playerY;
 
 	Map(int mapX, int mapY, int tile_size) {
 		sr = new ShapeRenderer();
@@ -109,47 +110,6 @@ abstract class Map implements MapGenerator {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see funler.mapGenerator#drawMap(int, int)
-	 */
-
-	public void drawMap(Vector2 newDest) {
-		sr.begin(ShapeType.Filled);
-
-		mapDest = newDest;
-		Vector2 vel = new Vector2();
-		vel = newDest.cpy();
-		vel.sub(mapCurr);
-		if (vel.len() < Map.TILE_SIZE / 10) {
-			mapCurr = mapDest.cpy();
-		} else {
-			vel.nor();
-			vel.scl(moveSpeed * Gdx.graphics.getDeltaTime());
-			mapCurr.add(vel);
-		}
-		for (int i = 0; i < mapX; i++) {
-			if (i * 50 + newDest.x > Funler.W - 100)
-				continue;
-			if (i * 50 + newDest.x < 50)
-				continue;
-			for (int j = 0; j < mapY; j++) {
-				if (j * 50 + newDest.y > Funler.H - 50)
-					break;
-				if (j * 50 + newDest.y < 0)
-					continue;
-				if (tileMap[i][j].getType() == 0) {
-					sr.setColor(new HexColor("#634f0e"));
-				} else {
-					sr.setColor(new HexColor("#0e2563"));
-				}
-				sr.rect(i * 50 + mapCurr.x, j * 50 + mapCurr.y, 50, 50);
-			}
-		}
-
-		sr.end();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -183,7 +143,7 @@ abstract class Map implements MapGenerator {
 	 * 
 	 * @see funler.mapGenerator#miniMap(int, int)
 	 */
-	public void miniMap(int moveX, int moveY) {
+	public void drawMiniMap() {
 		sr.begin(ShapeType.Filled);
 		// minimap scale
 		float sc;
@@ -208,13 +168,54 @@ abstract class Map implements MapGenerator {
 		}
 
 		sr.setColor(new HexColor("#ffffff"));
-		// reduse moveX to one intervall at the time.
-		float miniX = (moveX - Funler.W / 2 + tileMap.length * 50 / 2) / 10;
-		float miniY = (moveY - Funler.H / 2 + tileMap[0].length * 50 / 2) / 10;
+		// reduse moveX to one interval at the time.
+		float miniX = (playerX - Funler.W / 2 + tileMap.length * 50 / 2) / 10;
+		float miniY = (playerY - Funler.H / 2 + tileMap[0].length * 50 / 2) / 10;
 		miniX = miniX * sc / 5;
 		miniY = miniY * sc / 5;
 		sr.rect(Funler.W - (tileMap.length * sc) / 2 - miniX,
 				(tileMap[0].length * sc) / 2 - miniY, sc, sc);
+
+		sr.end();
+	}
+
+	public void update(float dt) {
+		Vector2 vel = new Vector2();
+		vel = mapDest.cpy();
+		vel.sub(mapCurr);
+		if (vel.len() < Map.TILE_SIZE / 10) {
+			mapCurr = mapDest.cpy();
+		} else {
+			vel.nor();
+			vel.scl(moveSpeed * dt);
+			mapCurr.add(vel);
+		}
+	}
+	
+	/*
+	 * draws the map to the current screen
+	 */
+	public void draw() {
+		sr.begin(ShapeType.Filled);
+
+		for (int i = 0; i < mapX; i++) {
+			if (i * 50 + mapDest.x > Funler.W - 100)
+				continue;
+			if (i * 50 + mapDest.x < 50)
+				continue;
+			for (int j = 0; j < mapY; j++) {
+				if (j * 50 + mapDest.y > Funler.H - 50)
+					break;
+				if (j * 50 + mapDest.y < 0)
+					continue;
+				if (tileMap[i][j].getType() == 0) {
+					sr.setColor(new HexColor("#634f0e"));
+				} else {
+					sr.setColor(new HexColor("#0e2563"));
+				}
+				sr.rect(i * 50 + mapCurr.x, j * 50 + mapCurr.y, 50, 50);
+			}
+		}
 
 		sr.end();
 	}

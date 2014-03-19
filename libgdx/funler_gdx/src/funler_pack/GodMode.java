@@ -1,4 +1,4 @@
-package Funler_pack;
+package funler_pack;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
