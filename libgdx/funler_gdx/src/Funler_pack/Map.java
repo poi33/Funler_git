@@ -1,5 +1,9 @@
 package Funler_pack;
 
+import utils.HexColor;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -8,12 +12,12 @@ abstract class Map implements MapGenerator {
 
 	private ShapeRenderer sr;
 
-	Tile[][] tileMap;
+	protected Tile[][] tileMap;
 
 	public static int TILE_SIZE;
 
-	Vector2 mapCurr; // current draw position
-	Vector2 mapDest; // moving towards
+	private Vector2 mapCurr; // current draw position
+	private Vector2 mapDest; // moving towards
 
 	protected int mapX;
 	protected int mapY;
@@ -111,7 +115,7 @@ abstract class Map implements MapGenerator {
 	 * @see funler.mapGenerator#drawMap(int, int)
 	 */
 
-	public void drawMap(Vector2 newDest, float dt) {
+	public void drawMap(Vector2 newDest) {
 		sr.begin(ShapeType.Filled);
 
 		mapDest = newDest;
@@ -122,7 +126,7 @@ abstract class Map implements MapGenerator {
 			mapCurr = mapDest.cpy();
 		} else {
 			vel.nor();
-			vel.scl(moveSpeed * dt);
+			vel.scl(moveSpeed * Gdx.graphics.getDeltaTime());
 			mapCurr.add(vel);
 		}
 		for (int i = 0; i < mapX; i++) {
@@ -136,9 +140,9 @@ abstract class Map implements MapGenerator {
 				if (j * 50 + newDest.y < 0)
 					continue;
 				if (tileMap[i][j].getType() == 0) {
-					sr.setColor(99, 79, 14, 255);
+					sr.setColor(new HexColor("#634f0e"));
 				} else {
-					sr.setColor(14, 37, 99, 255);
+					sr.setColor(new HexColor("#0e2563"));
 				}
 				sr.rect(i * 50 + mapCurr.x, j * 50 + mapCurr.y, 50, 50);
 			}
@@ -193,7 +197,7 @@ abstract class Map implements MapGenerator {
 			sc = 10;
 		}
 
-		sr.setColor(50, 150, 50, 255);
+		sr.setColor(new HexColor("0x329632"));
 		for (int i = 0; i < tileMap.length; i++) {
 			for (int j = 0; j < tileMap[i].length; j++) {
 				if (tileMap[i][j].getType() != 1) {
@@ -203,7 +207,7 @@ abstract class Map implements MapGenerator {
 			}
 		}
 
-		sr.setColor(255, 255, 255, 255);
+		sr.setColor(new HexColor("#ffffff"));
 		// reduse moveX to one intervall at the time.
 		float miniX = (moveX - Funler.W / 2 + tileMap.length * 50 / 2) / 10;
 		float miniY = (moveY - Funler.H / 2 + tileMap[0].length * 50 / 2) / 10;
