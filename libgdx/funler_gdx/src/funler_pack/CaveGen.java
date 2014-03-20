@@ -1,9 +1,9 @@
-package funler_pack;
+package Funler_pack;
 
 public class CaveGen extends Map {
 
-	CaveGen(int mapX, int mapY, int tile_size) {
-		super(mapX, mapY, tile_size);
+	CaveGen(int mapX, int mapY, int tile_size, Player player) {
+		super(mapX, mapY, tile_size, player);
 
 		//randGen();
 		mapWidth = mapX;

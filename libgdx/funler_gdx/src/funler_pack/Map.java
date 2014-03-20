@@ -1,4 +1,4 @@
-package funler_pack;
+package Funler_pack;
 
 import utils.HexColor;
 
@@ -20,17 +20,19 @@ abstract class Map implements MapGenerator {
 	protected int mapX;
 	protected int mapY;
 	private float moveSpeed = 500;
+	
+	private Player player;
+	
+	private Boolean fullmap = false; //draw a map of the playable area
 
-	public int playerX;
-	public int playerY;
-
-	Map(int mapX, int mapY, int tile_size) {
+	Map(int mapX, int mapY, int tile_size, Player player) {
 		sr = new ShapeRenderer();
 		TILE_SIZE = tile_size;
 
-		mapCurr = mapDest = new Vector2();
+		this.player = player;
 		this.mapX = mapX;
 		this.mapY = mapY;
+		mapCurr = mapDest = player.position;
 
 		tileMap = new Tile[mapX][mapY];
 	}
@@ -82,6 +84,15 @@ abstract class Map implements MapGenerator {
 				}
 			}
 		}
+	}
+	
+	public Vector2 getEmpty() {
+		for(int i=0; i<mapX; i++) {
+			for(int j=0; j<mapY; j++) {
+				if(tileMap[i][j].getType() == 1) return tileMap[i][j].position;
+			}
+		}
+		return null;
 	}
 
 	/***
@@ -147,21 +158,21 @@ abstract class Map implements MapGenerator {
 		sr.begin(ShapeType.Filled);
 		// minimap scale
 		float sc;
-		if (tileMap.length >= 200) {
-			sc = 1;
-		} else if (tileMap.length >= 100) {
-			sc = 2.5f;
-		} else if (tileMap.length >= 25) {
-			sc = 5;
-		} else {
+		if (mapX >= 200) {
 			sc = 10;
+		} else if (mapX >= 100) {
+			sc = 20;
+		} else if (mapX >= 25) {
+			sc = 30;
+		} else {
+			sc = 40;
 		}
 
 		sr.setColor(new HexColor("0x329632"));
-		for (int i = 0; i < tileMap.length; i++) {
-			for (int j = 0; j < tileMap[i].length; j++) {
+		for (int i = 0; i < mapX; i++) {
+			for (int j = 0; j < mapY; j++) {
 				if (tileMap[i][j].getType() != 1) {
-					sr.rect(Funler.W - tileMap.length * sc + (i * sc), j * sc,
+					sr.rect( sc + (i * sc), j * sc,
 							sc, sc);
 				}
 			}
@@ -169,18 +180,15 @@ abstract class Map implements MapGenerator {
 
 		sr.setColor(new HexColor("#ffffff"));
 		// reduse moveX to one interval at the time.
-		float miniX = (playerX - Funler.W / 2 + tileMap.length * 50 / 2) / 10;
-		float miniY = (playerY - Funler.H / 2 + tileMap[0].length * 50 / 2) / 10;
-		miniX = miniX * sc / 5;
-		miniY = miniY * sc / 5;
-		sr.rect(Funler.W - (tileMap.length * sc) / 2 - miniX,
-				(tileMap[0].length * sc) / 2 - miniY, sc, sc);
+		sr.rect((-player.getx()/TILE_SIZE*sc)+(mapX*sc)/2, (-player.gety()/TILE_SIZE*sc)+(mapY*sc/2), sc, sc);
 
 		sr.end();
 	}
 
 	public void update(float dt) {
 		Vector2 vel = new Vector2();
+		//TODO
+		mapDest = player.position;
 		vel = mapDest.cpy();
 		vel.sub(mapCurr);
 		if (vel.len() < Map.TILE_SIZE / 10) {
@@ -193,20 +201,24 @@ abstract class Map implements MapGenerator {
 	}
 	
 	/*
-	 * draws the map to the current screen
+	 * draws the map to the current screen M key for draw minimap
 	 */
 	public void draw() {
+		if (fullmap) {
+			drawMiniMap();
+			return;
+		}
 		sr.begin(ShapeType.Filled);
 
 		for (int i = 0; i < mapX; i++) {
-			if (i * 50 + mapDest.x > Funler.W - 100)
+			if (i * 50 + mapCurr.x > Funler.W - 100)
 				continue;
-			if (i * 50 + mapDest.x < 50)
+			if (i * 50 + mapCurr.x < 50)
 				continue;
 			for (int j = 0; j < mapY; j++) {
-				if (j * 50 + mapDest.y > Funler.H - 50)
+				if (j * 50 + mapCurr.y > Funler.H - 50)
 					break;
-				if (j * 50 + mapDest.y < 0)
+				if (j * 50 + mapCurr.y < 0)
 					continue;
 				if (tileMap[i][j].getType() == 0) {
 					sr.setColor(new HexColor("#634f0e"));
@@ -218,5 +230,9 @@ abstract class Map implements MapGenerator {
 		}
 
 		sr.end();
+	}
+	
+	void swapMini() {
+		fullmap = fullmap ? false : true;
 	}
 }

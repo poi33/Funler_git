@@ -1,4 +1,4 @@
-package funler_pack;
+package Funler_pack;
 
 public interface MapGenerator {
 	

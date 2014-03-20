@@ -1,4 +1,4 @@
-package funler_pack;
+package Funler_pack;
 
 import utils.HexColor;
 
@@ -15,13 +15,13 @@ public class Funler implements ApplicationListener {
 	public static final int TEXT_SIZE = 22;
 	public static int TILE_SIZE = 50;
 
-	private int moveX = 0;
-	private int moveY = 0;
+	/*private int moveX = 0;
+	private int moveY = 0;*/
 
-	GodMode mode;
-	Map mapc;
+	public GodMode mode;
+	public Map mapc;
 
-	private Player player;
+	public Player player;
 	
 	@Override
 	public void create() {
@@ -31,16 +31,17 @@ public class Funler implements ApplicationListener {
 
 		//mapc = new MapGen(mapWidth, mapHeight, this);
 
-		// Decide the size of the map here now
-		mapc = new CaveGen(49, 49, TILE_SIZE);
+		player = new Player();
+		mapc = new CaveGen(49, 49, TILE_SIZE, player);
+		player.setPosition(mapc.getEmpty());
 
-		moveX = -mapc.mapX / 2 * Map.TILE_SIZE + W / 2;
-		moveY = -mapc.mapY / 2 * Map.TILE_SIZE + H / 2;
+		/*moveX = -mapc.mapX / 2 * Map.TILE_SIZE + W / 2;
+		moveY = -mapc.mapY / 2 * Map.TILE_SIZE + H / 2;*/
 
 		GameInput input = new GameInput( this );
 		Gdx.input.setInputProcessor(input);
 		
-		player = new Player();
+		
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class Funler implements ApplicationListener {
 			if (mode == null) {
 				mode = new GodMode();
 			}
-			mode.showAll(moveX, moveY, mapc.getTileMap());
+			mode.showAll(player.getx(), player.gety(), mapc.getTileMap());
 
 			return;
 		}
@@ -82,10 +83,6 @@ public class Funler implements ApplicationListener {
 
 		// draw player
 		player.draw();
-		
-		// draw minimap
-		// TODO could make minimap an object inside map with a draw region(rect)
-		mapc.drawMiniMap();
 	}
 
 	@Override

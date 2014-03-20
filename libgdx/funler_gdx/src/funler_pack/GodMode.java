@@ -1,4 +1,4 @@
-package funler_pack;
+package Funler_pack;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,7 +19,7 @@ public class GodMode {
 		font.setScale(10);
 	}
 
-	void showAll(int moveX, int moveY, Tile[][] tileMap) {
+	void showAll(float moveX, float moveY, Tile[][] tileMap) {
 		sr.begin(ShapeType.Filled);
 		
 		float mapX = tileMap.length;

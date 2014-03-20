@@ -1,4 +1,6 @@
-package funler_pack;
+package Funler_pack;
+
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * 
@@ -15,21 +17,20 @@ package funler_pack;
 public class Tile {
 	// What type the square is. 0 = wall, 1 = (current) default tile, 2 = void;
 	private int type;
-	private int x;
+	Vector2 position;
 	private int y;
 
 	Tile(int x, int y, int type) {
 		this.type = type;
-		this.x = x;
-		this.y = y;
+		position = new Vector2(x,y);
 	}
 
-	int getX() {
-		return x;
+	float getX() {
+		return position.x;
 	}
 
-	int getY() {
-		return y;
+	float getY() {
+		return position.y;
 	}
 
 	int getType() {

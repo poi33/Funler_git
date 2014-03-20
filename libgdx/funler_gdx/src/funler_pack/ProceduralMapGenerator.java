@@ -1,4 +1,4 @@
-package funler_pack;
+package Funler_pack;
 
 /**
  * This class will create grid based maps procedurally!
@@ -9,8 +9,8 @@ package funler_pack;
  * @author j
  */
 public class ProceduralMapGenerator extends Map {
-	ProceduralMapGenerator(int mapX, int mapY, int tile_size) {
-		super(mapX, mapY, tile_size);
+	ProceduralMapGenerator(int mapX, int mapY, int tile_size, Player player) {
+		super(mapX, mapY, tile_size, player);
 		
 		this.mapX = mapX;
 		this.mapY = mapY;

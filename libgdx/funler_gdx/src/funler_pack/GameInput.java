@@ -1,4 +1,4 @@
-package funler_pack;
+package Funler_pack;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,16 +20,23 @@ public class GameInput implements InputProcessor {
 			Gdx.app.exit();
 			break;
 		case Input.Keys.LEFT:
-			funler.mapc.mapDest.add(new Vector2(Funler.TILE_SIZE,0));
+			funler.player.position.add(new Vector2(Funler.TILE_SIZE,0));
 			break;
 		case Input.Keys.RIGHT:
-			funler.mapc.mapDest.add(new Vector2(- Funler.TILE_SIZE,0));
+			funler.player.position.add(new Vector2(- Funler.TILE_SIZE,0));
 			break;
 		case Input.Keys.UP:
-			funler.mapc.mapDest.add(new Vector2(0,- Funler.TILE_SIZE));
+			funler.player.position.add(new Vector2(0,- Funler.TILE_SIZE));
 			break;
 		case Input.Keys.DOWN:
-			funler.mapc.mapDest.add(new Vector2(0,Funler.TILE_SIZE));
+			funler.player.position.add(new Vector2(0,Funler.TILE_SIZE));
+			break;
+		case Input.Keys.M:
+			funler.player.hide();
+			funler.mapc.swapMini();
+			break;
+		case Input.Keys.R:
+			funler.mapc.generateNew();
 			break;
 		default:
 			return false;
