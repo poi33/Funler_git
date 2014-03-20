@@ -11,6 +11,10 @@ public class HexColor extends Color {
 		a = c.a;
 	}
 
+	public HexColor(String hexval, String alpha) {
+		this(hexval + alpha);
+	}
+
 	// masks out color values with bitwise and operator
 	public static Color colorFromHex(long hex) {
 		float r,g,b,a;
