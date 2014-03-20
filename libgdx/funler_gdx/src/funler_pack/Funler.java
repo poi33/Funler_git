@@ -33,7 +33,8 @@ public class Funler implements ApplicationListener {
 
 		player = new Player();
 		mapc = new CaveGen(49, 49, TILE_SIZE, player);
-		player.setPosition(mapc.getEmpty());
+		Tile emptyTile = mapc.getEmpty();
+		player.setPosition(emptyTile.getX(), emptyTile.getY());
 
 		/*moveX = -mapc.mapX / 2 * Map.TILE_SIZE + W / 2;
 		moveY = -mapc.mapY / 2 * Map.TILE_SIZE + H / 2;*/
@@ -59,7 +60,7 @@ public class Funler implements ApplicationListener {
 
 	private void draw() {
 		// clearing screen + bg color
-		HexColor c = new HexColor("#aaaaaaff");
+		HexColor c = new HexColor("#aaaaaa", "ff");
 		Gdx.gl.glClearColor(c.r, c.g, c.b, c.a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -73,7 +74,7 @@ public class Funler implements ApplicationListener {
 			if (mode == null) {
 				mode = new GodMode();
 			}
-			mode.showAll(player.getx(), player.gety(), mapc.getTileMap());
+			mode.showAll(player.x, player.y, mapc.getTileMap());
 
 			return;
 		}

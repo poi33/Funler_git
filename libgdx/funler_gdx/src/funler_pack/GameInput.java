@@ -3,7 +3,6 @@ package Funler_pack;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
 
 public class GameInput implements InputProcessor {
 	
@@ -20,16 +19,16 @@ public class GameInput implements InputProcessor {
 			Gdx.app.exit();
 			break;
 		case Input.Keys.LEFT:
-			funler.player.position.add(new Vector2(Funler.TILE_SIZE,0));
+			funler.player.x += 1;
 			break;
 		case Input.Keys.RIGHT:
-			funler.player.position.add(new Vector2(- Funler.TILE_SIZE,0));
+			funler.player.x -= 1;
 			break;
 		case Input.Keys.UP:
-			funler.player.position.add(new Vector2(0,- Funler.TILE_SIZE));
+			funler.player.y -= 1;
 			break;
 		case Input.Keys.DOWN:
-			funler.player.position.add(new Vector2(0,Funler.TILE_SIZE));
+			funler.player.y += 1;
 			break;
 		case Input.Keys.M:
 			funler.player.hide();

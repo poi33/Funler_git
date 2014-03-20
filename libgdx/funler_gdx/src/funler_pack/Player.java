@@ -4,24 +4,24 @@ import utils.HexColor;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 
 public class Player {
 
 	private ShapeRenderer sr;
 
-	public Vector2 position;
+	public int x, y; // position in the tile_map
 
 	private Boolean invis = false;
 
 	public Player() {
-		sr = new ShapeRenderer();
-		position = new Vector2();
+		this(0,0);
 	}
 	
-	public Player(float x, float y) {
+	public Player(int x, int y) {
+		this.x = x;
+		this.y = y;
+		
 		sr = new ShapeRenderer();
-		position = new Vector2(x, y);
 	}
 
 	/**
@@ -36,21 +36,9 @@ public class Player {
 		sr.end();
 	}
 	
-	void setPosition(Vector2 position) {
-		this.position = position;
-	}
-	
-	void setPosition(float x, float y) {
-		position.x = x;
-		position.y = y;
-	}
-
-	float getx() {
-		return position.x;
-	}
-
-	float gety() {
-		return position.y;
+	void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 
 	void hide() {
