@@ -1,7 +1,5 @@
 package Funler_pack;
 
-import com.badlogic.gdx.math.Vector2;
-
 /**
  * 
  * @author Anonym
@@ -14,8 +12,13 @@ import com.badlogic.gdx.math.Vector2;
  * 
  */
 
+/* What type the square is:
+	0 = (floor default tile), 
+	1 = Wall tile (should not be able to walk into). 
+	n = void; (all others are ignored by draw and logic)
+*/
+
 public class Tile {
-	// What type the square is. 0 = wall, 1 = (current) default tile, 2 = void;
 	private int type;
 	int x, y;
 

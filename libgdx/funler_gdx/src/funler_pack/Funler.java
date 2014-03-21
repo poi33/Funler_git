@@ -12,11 +12,8 @@ public class Funler implements ApplicationListener {
 
 	public static boolean DEBUG = false;
 
-	public static final int TEXT_SIZE = 22;
+	public static final int TEXT_SIZE = 5;
 	public static int TILE_SIZE = 50;
-
-	/*private int moveX = 0;
-	private int moveY = 0;*/
 
 	public GodMode mode;
 	public Map mapc;
@@ -34,10 +31,7 @@ public class Funler implements ApplicationListener {
 		player = new Player();
 		mapc = new CaveGen(49, 49, TILE_SIZE, player);
 		Tile emptyTile = mapc.getEmpty();
-		player.setPosition(emptyTile.getX(), emptyTile.getY());
-
-		/*moveX = -mapc.mapX / 2 * Map.TILE_SIZE + W / 2;
-		moveY = -mapc.mapY / 2 * Map.TILE_SIZE + H / 2;*/
+		player.setPosition(-emptyTile.getX(), -emptyTile.getY());
 
 		GameInput input = new GameInput( this );
 		Gdx.input.setInputProcessor(input);
@@ -64,6 +58,9 @@ public class Funler implements ApplicationListener {
 		Gdx.gl.glClearColor(c.r, c.g, c.b, c.a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		// draw map
+		mapc.draw();
+
 		if (DEBUG) {
 			// TODO some debug stuff when needed
 			//System.out.println(dt);
@@ -76,12 +73,9 @@ public class Funler implements ApplicationListener {
 			}
 			mode.showAll(player.x, player.y, mapc.getTileMap());
 
-			return;
+			//return;
 		}
-
-		// draw map
-		mapc.draw();
-
+		
 		// draw player
 		player.draw();
 	}
