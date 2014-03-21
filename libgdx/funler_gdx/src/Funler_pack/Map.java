@@ -32,7 +32,8 @@ abstract class Map implements MapGenerator {
 		this.player = player;
 		this.mapX = mapX;
 		this.mapY = mapY;
-		mapCurr = mapDest = new Vector2(player.x, player.y);
+		mapCurr = new Vector2(player.x, player.y);
+		mapDest = mapCurr.cpy().scl(Funler.TILE_SIZE);
 		
 		tileMap = new Tile[mapX][mapY];
 	}
@@ -89,7 +90,8 @@ abstract class Map implements MapGenerator {
 	public Tile getEmpty() {
 		for(int i=0; i<mapX; i++) {
 			for(int j=0; j<mapY; j++) {
-				if(tileMap[i][j].getType() == 1) return tileMap[i][j];
+				System.out.println(tileMap[i][j].getType());
+				if(tileMap[i][j].getType() == 0) return tileMap[i][j];
 			}
 		}
 		return null;
@@ -159,29 +161,30 @@ abstract class Map implements MapGenerator {
 		// minimap scale
 		float sc;
 		if (mapX >= 200) {
-			sc = 10;
+			sc = 3;
 		} else if (mapX >= 100) {
-			sc = 20;
+			sc = 5;
 		} else if (mapX >= 25) {
-			sc = 30;
+			sc = 10;
 		} else {
 			sc = 40;
 		}
 
-		sr.setColor(new HexColor("0x329632"));
 		for (int i = 0; i < mapX; i++) {
 			for (int j = 0; j < mapY; j++) {
-				if (tileMap[i][j].getType() != 1) {
+				System.out.println(player.x + ", " + player.y);
+				if (player.x == i && player.y == j) {
+					sr.setColor(new HexColor("0xffffff"));
+					sr.rect( sc + (i * sc), j * sc,
+							sc, sc);
+				}
+				else if (tileMap[i][j].getType() != 1) {
+					sr.setColor(new HexColor("0x329632"));
 					sr.rect( sc + (i * sc), j * sc,
 							sc, sc);
 				}
 			}
 		}
-
-		sr.setColor(new HexColor("#ffffff"));
-		// reduse moveX to one interval at the time.
-		sr.rect((-player.x/TILE_SIZE*sc)+(mapX*sc)/2, (-player.y/TILE_SIZE*sc)+(mapY*sc/2), sc, sc);
-
 		sr.end();
 	}
 
@@ -189,10 +192,10 @@ abstract class Map implements MapGenerator {
 		Vector2 vel = new Vector2();
 		//TODO
 		mapDest = new Vector2(player.x, player.y);
-		vel = mapDest.cpy();
+		vel = mapDest.cpy().scl(Funler.TILE_SIZE);
 		vel.sub(mapCurr);
 		if (vel.len() < Map.TILE_SIZE / 10) {
-			mapCurr = mapDest.cpy();
+			mapCurr.add(vel);
 		} else {
 			vel.nor();
 			vel.scl(moveSpeed * dt);

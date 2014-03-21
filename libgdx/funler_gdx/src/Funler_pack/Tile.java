@@ -1,7 +1,5 @@
 package Funler_pack;
 
-import com.badlogic.gdx.math.Vector2;
-
 /**
  * 
  * @author Anonym
