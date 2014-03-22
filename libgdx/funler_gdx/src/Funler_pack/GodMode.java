@@ -16,11 +16,14 @@ public class GodMode {
 		font = new BitmapFont();
 		batch = new SpriteBatch();
 			
-		font.setScale(10);
+		font.setScale(1);
 	}
 
 	void showAll(float moveX, float moveY, Tile[][] tileMap) {
 		sr.begin(ShapeType.Filled);
+		batch.begin();
+		moveX = moveX * Funler.TILE_SIZE;
+		moveY = moveY * Funler.TILE_SIZE;
 		
 		float mapX = tileMap.length;
 		float mapY = tileMap[0].length;
@@ -28,7 +31,7 @@ public class GodMode {
 		for (int i = (int) mapX - 1; i > 0; i--) {
 			for (int j = (int) mapY - 1; j > 0; j--) {
 				String we = i + "|" + j;
-				font.setColor(255, 255, 255, 255);
+				
 				font.draw(batch, we,50 * (i - 1) + moveX, 50 * (j - 1) + moveY + 50);
 				
 				if (tileMap[i][j].getType() == 1) {
@@ -52,7 +55,7 @@ public class GodMode {
 				}
 			}
 		}
-		
+		batch.end();
 		sr.end();
 	}
 

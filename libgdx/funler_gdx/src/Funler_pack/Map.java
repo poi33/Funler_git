@@ -21,7 +21,7 @@ abstract class Map implements MapGenerator {
 	protected int mapY;
 	private float moveSpeed = 500;
 	
-	private Player player;
+	protected Player player;
 	
 	private Boolean fullmap = false; //draw a map of the playable area
 
@@ -68,14 +68,23 @@ abstract class Map implements MapGenerator {
 				.println("Error in getCurrentTile.\nProbebly moved outside the playable area");
 		return null;
 	}
-
+	
+	public Tile getEmpty() {
+		for(int i=0; i<mapX; i++) {
+			for(int j=0; j<mapY; j++) {
+				if(tileMap[i][j].getType() == 0) return tileMap[i][j];
+			}
+		}
+		return null;
+	}
+	
 	/***
 	 * Random generated tiles
 	 */
 	void randGen() {
 		for (int i = 0; i < mapX; i++) {
 			for (int j = 0; j < mapY; j++) {
-				int r = (int) (Math.random() * 4.0f);
+				int r = (int) (Math.random() * 2);
 				if (r == 0) {
 					// tileMap[i][j] = new Tile(i, j, 1);
 					tileMap[i][j] = new Tile(i, j, 1);
@@ -84,15 +93,6 @@ abstract class Map implements MapGenerator {
 				}
 			}
 		}
-	}
-	
-	public Tile getEmpty() {
-		for(int i=0; i<mapX; i++) {
-			for(int j=0; j<mapY; j++) {
-				if(tileMap[i][j].getType() == 1) return tileMap[i][j];
-			}
-		}
-		return null;
 	}
 
 	/***
@@ -103,18 +103,20 @@ abstract class Map implements MapGenerator {
 		// map generate (int map)
 		for (int i = 0; i < mapX; i += 2) {
 			for (int j = 0; j < mapY; j += 2) {
-				int r = (int) Math.random() * 4;
+				if (i+1 >= mapX) continue;
+				if (j+1 >= mapY) break;
+				int r = (int) (Math.random() * 4);
 				if (r == 0) {
-					tileMap[i][j] = new Tile(i, j, 1);
-					tileMap[i + 1][j] = new Tile(i + 1, j, 1);
-					tileMap[i][j + 1] = new Tile(i, j + 1, 1);
-					tileMap[i + 1][j + 1] = new Tile(i + 1, j + 1, 1);
+					tileMap[i][j].setType(1);
+					tileMap[i + 1][j].setType(1);
+					tileMap[i][j + 1].setType(1);
+					tileMap[i + 1][j + 1].setType(1);
 
 				} else {
-					tileMap[i][j] = new Tile(i, j, 0);
-					tileMap[i + 1][j] = new Tile(i + 1, j, 0);
-					tileMap[i][j + 1] = new Tile(i, j + 1, 0);
-					tileMap[i + 1][j + 1] = new Tile(i + 1, j + 1, 0);
+					tileMap[i][j].setType(0);
+					tileMap[i + 1][j].setType(0);
+					tileMap[i][j + 1].setType(0);
+					tileMap[i + 1][j + 1].setType(0);
 
 				}
 			}
@@ -180,7 +182,7 @@ abstract class Map implements MapGenerator {
 
 		sr.setColor(new HexColor("#ffffff"));
 		// reduse moveX to one interval at the time.
-		sr.rect((-player.x/TILE_SIZE*sc)+(mapX*sc)/2, (-player.y/TILE_SIZE*sc)+(mapY*sc/2), sc, sc);
+		sr.rect(-player.x*sc, -player.y*sc, sc, sc);
 
 		sr.end();
 	}
@@ -188,7 +190,7 @@ abstract class Map implements MapGenerator {
 	public void update(float dt) {
 		Vector2 vel = new Vector2();
 		//TODO
-		mapDest = new Vector2(player.x, player.y);
+		mapDest = new Vector2(player.x * Funler.TILE_SIZE, player.y * Funler.TILE_SIZE);
 		vel = mapDest.cpy();
 		vel.sub(mapCurr);
 		if (vel.len() < Map.TILE_SIZE / 10) {
