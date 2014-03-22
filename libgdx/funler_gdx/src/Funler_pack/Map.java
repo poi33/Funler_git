@@ -12,11 +12,11 @@ abstract class Map implements MapGenerator {
 
 	protected Tile[][] tileMap;
 
-	public static int TILE_SIZE;
-
 	private Vector2 mapCurr; // current draw position
 	public Vector2 mapDest; // moving towards
 
+	private int seed;
+	
 	protected int mapX;
 	protected int mapY;
 	private float moveSpeed = 500;
@@ -25,10 +25,10 @@ abstract class Map implements MapGenerator {
 	
 	private Boolean fullmap = false; //draw a map of the playable area
 
-	Map(int mapX, int mapY, int tile_size, Player player) {
+	Map(int mapX, int mapY, Player player, int seed) {
 		sr = new ShapeRenderer();
-		TILE_SIZE = tile_size;
 
+		this.seed = seed;
 		this.player = player;
 		this.mapX = mapX;
 		this.mapY = mapY;
@@ -76,6 +76,16 @@ abstract class Map implements MapGenerator {
 			}
 		}
 		return null;
+	}
+	
+	int calcTile(int i , int j) {
+		int calc = ((i%j) + (j%i)) * seed;
+		if (calc%2 <= seed%2) {
+			return 1;
+		} else {
+			return 2;
+		}
+		
 	}
 	
 	/***
@@ -193,7 +203,7 @@ abstract class Map implements MapGenerator {
 		mapDest = new Vector2(player.x * Funler.TILE_SIZE, player.y * Funler.TILE_SIZE);
 		vel = mapDest.cpy();
 		vel.sub(mapCurr);
-		if (vel.len() < Map.TILE_SIZE / 10) {
+		if (vel.len() < Funler.TILE_SIZE / 10) {
 			mapCurr = mapDest.cpy();
 		} else {
 			vel.nor();
@@ -211,24 +221,25 @@ abstract class Map implements MapGenerator {
 			return;
 		}
 		sr.begin(ShapeType.Filled);
-
+		int sw = ((Funler.W/2) - (Funler.W/2 % Funler.TILE_SIZE));
+		int sh = ((Funler.H/2) - (Funler.H/2 % Funler.TILE_SIZE));
 		for (int i = 0; i < mapX; i++) {
-			if (i * Funler.TILE_SIZE + mapCurr.x > Funler.W - 100)
+			if (i * Funler.TILE_SIZE + mapCurr.x + sw > Funler.W - 100)
 				continue;
-			if (i * Funler.TILE_SIZE + mapCurr.x < Funler.TILE_SIZE)
+			if (i * Funler.TILE_SIZE + mapCurr.x +sw < Funler.TILE_SIZE)
 				continue;
 			for (int j = 0; j < mapY; j++) {
-				if (j * Funler.TILE_SIZE + mapCurr.y > Funler.H - Funler.TILE_SIZE)
+				if (j * Funler.TILE_SIZE + mapCurr.y + sh > Funler.H - Funler.TILE_SIZE)
 					break;
-				if (j * Funler.TILE_SIZE + mapCurr.y < 0)
+				if (j * Funler.TILE_SIZE + mapCurr.y +sh < 0)
 					continue;
 				if (tileMap[i][j].getType() == 0) {
 					sr.setColor(new HexColor("#634f0e"));
 				} else {
 					sr.setColor(new HexColor("#0e2563"));
 				}
-				sr.rect(i * Funler.TILE_SIZE + mapCurr.x, j * Funler.TILE_SIZE + 
-							mapCurr.y, Funler.TILE_SIZE, Funler.TILE_SIZE);
+				sr.rect(i * Funler.TILE_SIZE + mapCurr.x + sw , j * Funler.TILE_SIZE + 
+							mapCurr.y +sh, Funler.TILE_SIZE, Funler.TILE_SIZE);
 			}
 		}
 

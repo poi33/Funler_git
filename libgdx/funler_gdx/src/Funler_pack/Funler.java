@@ -29,7 +29,8 @@ public class Funler implements ApplicationListener {
 		//mapc = new MapGen(mapWidth, mapHeight, this);
 
 		player = new Player();
-		mapc = new CaveGen(49, 49, TILE_SIZE, player);
+		//NB! Seed currently tryed implement (and of course our seed is 42)
+		mapc = new CaveGen(49, 49, player, 42);
 		Tile emptyTile = mapc.getEmpty();
 		player.setPosition(-emptyTile.getX(), -emptyTile.getY());
 

@@ -9,8 +9,8 @@ package Funler_pack;
  * @author j
  */
 public class ProceduralMapGenerator extends Map {
-	ProceduralMapGenerator(int mapX, int mapY, int tile_size, Player player) {
-		super(mapX, mapY, tile_size, player);
+	ProceduralMapGenerator(int mapX, int mapY, Player player, int seed) {
+		super(mapX, mapY, player, seed);
 		
 		this.mapX = mapX;
 		this.mapY = mapY;
