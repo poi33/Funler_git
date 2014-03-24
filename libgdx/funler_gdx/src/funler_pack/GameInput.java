@@ -5,29 +5,33 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 public class GameInput implements InputProcessor {
-	
+
 	Funler funler; // main funler instance
-	
+
 	public GameInput(Funler funler) {
 		this.funler = funler;
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		switch(keycode){
+		switch (keycode) {
 		case Input.Keys.ESCAPE:
 			Gdx.app.exit();
 			break;
 		case Input.Keys.LEFT:
-			funler.player.x += 1;
+			if (!funler.mapc.mapHit(1))
+				funler.player.x += 1;
 			break;
 		case Input.Keys.RIGHT:
-			funler.player.x -= 1;
+			if (!funler.mapc.mapHit(3))
+				funler.player.x -= 1;
 			break;
 		case Input.Keys.UP:
-			funler.player.y -= 1;
+			if (!funler.mapc.mapHit(2))
+				funler.player.y -= 1;
 			break;
 		case Input.Keys.DOWN:
+			if (!funler.mapc.mapHit(4))
 			funler.player.y += 1;
 			break;
 		case Input.Keys.M:
