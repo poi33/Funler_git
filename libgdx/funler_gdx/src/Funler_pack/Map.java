@@ -8,14 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 
 abstract class Map implements MapGenerator {
 
-	private ShapeRenderer sr;
+	protected ShapeRenderer sr;
 
 	protected Tile[][] tileMap;
 
 	private Vector2 mapCurr; // current draw position
 	public Vector2 mapDest; // moving towards
-
-	private int seed;
 
 	protected int mapX;
 	protected int mapY;
@@ -25,10 +23,9 @@ abstract class Map implements MapGenerator {
 
 	private Boolean fullmap = false; // draw a map of the playable area
 
-	Map(int mapX, int mapY, Player player, int seed) {
+	Map(int mapX, int mapY, Player player) {
 		sr = new ShapeRenderer();
 
-		this.seed = seed;
 		this.player = player;
 		this.mapX = mapX;
 		this.mapY = mapY;
@@ -79,16 +76,6 @@ abstract class Map implements MapGenerator {
 			}
 		}
 		return null;
-	}
-
-	int calcTile(int i, int j) {
-		int calc = ((i % j) + (j % i)) * seed;
-		if (calc % 2 <= seed % 2) {
-			return 1;
-		} else {
-			return 2;
-		}
-
 	}
 
 	/***

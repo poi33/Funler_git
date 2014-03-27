@@ -30,9 +30,10 @@ public class Funler implements ApplicationListener {
 
 		player = new Player();
 		//NB! Seed currently tryed implement (and of course our seed is 42)
-		mapc = new CaveGen(49, 49, player, 42);
-		Tile emptyTile = mapc.getEmpty();
-		player.setPosition(-emptyTile.getX(), -emptyTile.getY());
+		//mapc = new CaveGen(49, 49, player);
+		mapc = new SeedMap(49, 49, player, 3242342);
+		//Tile emptyTile = mapc.getEmpty();
+		//player.setPosition(-emptyTile.getX(), -emptyTile.getY());
 
 		GameInput input = new GameInput( this );
 		Gdx.input.setInputProcessor(input);

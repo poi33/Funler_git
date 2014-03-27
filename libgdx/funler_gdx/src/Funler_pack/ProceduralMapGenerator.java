@@ -6,11 +6,11 @@ package Funler_pack;
  * goal is to generate different types of maps, such as dungeons and open
  * terrain.
  * 
- * @author j
+ * @author Julian
  */
 public class ProceduralMapGenerator extends Map {
-	ProceduralMapGenerator(int mapX, int mapY, Player player, int seed) {
-		super(mapX, mapY, player, seed);
+	ProceduralMapGenerator(int mapX, int mapY, Player player) {
+		super(mapX, mapY, player);
 		
 		this.mapX = mapX;
 		this.mapY = mapY;
