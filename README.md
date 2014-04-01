@@ -9,6 +9,13 @@ We periodicly work on the game and we are currently two people working on the ga
 
 	Julian Hisdal Nymark julianymark@gmail.com
 
+#TODO
+Julian  -Battle system
+	-Improving engine
+
+Persijn -Main menu
+	-Gui elements
+	-Graphic elements
 
 
 ## About
