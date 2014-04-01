@@ -3,6 +3,8 @@ package Funler_pack;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class GameInput implements InputProcessor {
 
@@ -36,10 +38,13 @@ public class GameInput implements InputProcessor {
 			break;
 		case Input.Keys.M:
 			funler.player.hide();
-			funler.mapc.swapMini();
+			funler.mainscreen.mapc.swapMini();
+			break;
+		case Input.Keys.O:
+			funler.setScreen(funler.guiop);
 			break;
 		case Input.Keys.R:
-			funler.mapc.generateNew();
+			funler.mainscreen.mapc.generateNew();
 			break;
 		default:
 			return false;
@@ -61,7 +66,6 @@ public class GameInput implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

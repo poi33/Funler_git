@@ -15,6 +15,8 @@ public class SeedMap extends Map implements MapGenerator {
 	}
 
 	int seedit(int i, int j) {
+		i += 5000;
+		j += 5000;
 		int calc;
 		float an;
 		
