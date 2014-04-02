@@ -8,10 +8,12 @@ public class Funler extends Game implements ApplicationListener {
 	public static int W;
 	public static int H;
 
-	public GUIoption guiop;
-	public PlayScreen mainscreen;
-	public Player player;
+	GUIoption guiop;
+	PlayScreen mainscreen;
+	Player player;
 	GameInput input;
+	ScreenOptions scop;
+	
 
 	public static boolean DEBUG = false;
 
@@ -36,7 +38,7 @@ public class Funler extends Game implements ApplicationListener {
 		getScreen().render(dt);
 	}
 	
-	public void setScreenOptions() {
+	public void setGuiOptions() {
 		Gdx.input.setInputProcessor(guiop.options);
 		setScreen(guiop);
 	}
@@ -47,6 +49,13 @@ public class Funler extends Game implements ApplicationListener {
 		
 		Gdx.input.setInputProcessor(input);
 		setScreen(mainscreen);
+	}
+	
+	public void setScreenOption() {
+		if (scop == null)
+			scop = new ScreenOptions(this);
+		Gdx.input.setInputProcessor(scop.options);
+		setScreen(scop);
 	}
 
 	private void draw() {

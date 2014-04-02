@@ -24,7 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class GUIoption implements Screen {
+public class ScreenOptions implements Screen {
 
 	OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(),
 			Gdx.graphics.getHeight());
@@ -34,14 +34,28 @@ public class GUIoption implements Screen {
 	Skin skin;
 
 	Stage options;
+	Table table;
+	
+	boolean fullScreen;
 
-	private TextButton resume;
-	private TextButton exit;
-	private TextButton screenFix;
+	private TextButton full;
+	private TextButton res1;
+	private TextButton res2;
+	private TextButton res3;
+	private TextButton res4;
+	private TextButton res5;
+	private TextButton res6;
+	private TextButton res7;
+	private TextButton res8;
+	private TextButton res9;
+	
+	private TextButton back;
 
 	Funler game;
 
-	GUIoption(Funler main) {
+	ScreenOptions(Funler main) {
+		fullScreen = Gdx.graphics.isFullscreen();
+		
 		bfont = new BitmapFont();
 		this.game = main;
 		batch = new SpriteBatch();
@@ -65,59 +79,44 @@ public class GUIoption implements Screen {
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 
-		Table table = new Table();
+		table = new Table();
 		table.setFillParent(true);
 		options.addActor(table);
 
-		resume = new TextButton("Resume", skin);
-		resume.setTransform(true);
-		resume.setScale(2);
-		table.addActor(resume);
+		full = simpleButton("Fullscreen"+full, -100);
+		table.addActor(full);
+		res1 = simpleButton("1600 - 900", 0);
+		table.addActor(res1);
 
-		resume.setPosition(options.getWidth() / 2 - resume.getMinWidth() / 2,
-				options.getHeight() / 2);
-
-		resume.addListener(new ChangeListener() {
+		res1.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreenGame();
+				Gdx.graphics.setDisplayMode(1600, 900, true);
 			}
 		});
-		
-		
-		screenFix = new TextButton("screen", skin);
-		screenFix.setPosition(options.getWidth() / 2 - screenFix.getMinWidth() / 2,
-				options.getHeight() / 2 +200);
-		screenFix.setTransform(true);
-		screenFix.setScale(2);
-		
-		
-		
-		screenFix.addListener(new ChangeListener() {
-			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreenOption();
-			}
-		});
-		
-		table.addActor(screenFix);
-		
+
 		// table.add(new Image(skin.newDrawable("white",
 		// Color.WHITE))).size(64);
 
-		exit = new TextButton("Exit", skin);
-		exit.setPosition(options.getWidth() / 2 - exit.getMinWidth() / 2,
-				options.getHeight() / 2 - 400);
-		exit.setTransform(true);
-		exit.setScale(2);
+		back =simpleButton("Back", 700);
+		table.addActor(back);
 
-		exit.addListener(new ChangeListener() {
+		back.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.exit();
+				game.setGuiOptions();
 			}
 		});
 
-		table.addActor(exit);
 	}
-
+	
+	private TextButton simpleButton(String s, int downY) {
+		TextButton init = new TextButton(s, skin);
+		init.setPosition(options.getWidth() / 2 - init.getMinWidth() / 2,
+				options.getHeight() / 2 - downY);
+		init.setTransform(true);
+		init.setScale(2);
+		return init;
+	}
+	
 	@Override
 	public void resize(int width, int height) {
 		options.setViewport(width, height, true);
@@ -143,7 +142,7 @@ public class GUIoption implements Screen {
 
 	@Override
 	public void show() {
-		System.out.println("Starting options");
+		//Could alternativly be our initialsasjon of class
 	}
 
 	@Override
@@ -155,8 +154,7 @@ public class GUIoption implements Screen {
 
 		options.draw();
 		batch.begin();
-		bfont.draw(batch, "Welcome to Funler!!", Funler.W / 2, Funler.H - 100);
-		bfont.draw(batch, "Menu Screen", Funler.W / 2, Funler.H - 130);
+		bfont.draw(batch, "Screen Options", Funler.W / 2, Funler.H - 130);
 		batch.end();
 
 		Table.drawDebug(options);
