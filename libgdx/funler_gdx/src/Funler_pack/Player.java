@@ -31,8 +31,11 @@ public class Player {
 		if (invis)
 			return;
 		sr.begin(ShapeType.Filled);
-		sr.setColor(new HexColor("#ffffff"));
-		sr.rect(Funler.W / 2, Funler.H / 2, Map.TILE_SIZE, Map.TILE_SIZE);
+		sr.setColor(new HexColor("#ffffff", "00"));
+		//Calculate offsets from tile grid.
+		float ox = (Funler.W/2) % Funler.TILE_SIZE;
+		float oy = (Funler.H/2) % Funler.TILE_SIZE;
+		sr.rect(Funler.W / 2 - ox, Funler.H / 2 - oy, Funler.TILE_SIZE, Funler.TILE_SIZE);
 		sr.end();
 	}
 	

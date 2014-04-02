@@ -12,8 +12,13 @@ package Funler_pack;
  * 
  */
 
+/* What type the square is:
+	0 = (floor default tile), 
+	1 = Wall tile (should not be able to walk into). 
+	n = void; (all others are ignored by draw and logic)
+*/
+
 public class Tile {
-	// What type the square is. 0 = wall, 1 = (current) default tile, 2 = void;
 	private int type;
 	int x, y;
 
