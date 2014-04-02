@@ -86,7 +86,7 @@ abstract class Map implements MapGenerator {
 		}
 	}
 	
-	public Tile getEmpty() {
+	public Tile getEmpty() { //
 		for(int i=0; i<mapX; i++) {
 			for(int j=0; j<mapY; j++) {
 				System.out.println(tileMap[i][j].getType());
