@@ -13,8 +13,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
@@ -33,15 +35,7 @@ public class ScreenOptions implements Screen {
 	boolean fullScreen;
 
 	private TextButton full;
-	private TextButton res1;
-	private TextButton res2;
-	private TextButton res3;
-	private TextButton res4;
-	private TextButton res5;
-	private TextButton res6;
-	private TextButton res7;
-	private TextButton res8;
-	private TextButton res9;
+	private TextButton res[];
 	
 	private TextButton back;
 
@@ -79,15 +73,20 @@ public class ScreenOptions implements Screen {
 
 		full = simpleButton("Fullscreen"+full, -100);
 		table.addActor(full);
-		res1 = simpleButton("1600 - 900", 0);
-		table.addActor(res1);
+		
+		res = new TextButton[1];
+		res[0] = simpleButton("1600 - 900", 0);
+		table.addActor(res[0]);
 
-		res1.addListener(new ChangeListener() {
+		res[0].addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 				Gdx.graphics.setDisplayMode(1600, 900, false);
+				resize(1600, 900);
 				game.setScreenOption();
 			}
 		});
+		
+		
 
 		// table.add(new Image(skin.newDrawable("white",
 		// Color.WHITE))).size(64);
@@ -101,6 +100,8 @@ public class ScreenOptions implements Screen {
 			}
 		});
 		table.addActor(back);
+		
+		
 
 	}
 	
@@ -115,7 +116,7 @@ public class ScreenOptions implements Screen {
 	
 	@Override
 	public void resize(int width, int height) {
-		//setViewport(width, height, true);
+		
 	}
 
 	@Override
@@ -152,13 +153,11 @@ public class ScreenOptions implements Screen {
 		batch.begin();
 		bfont.draw(batch, "Screen stage", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() /5);
 		batch.end();
-
-		Table.drawDebug(stage);
+		
 	}
 
 	@Override
 	public void hide() {
-		System.out.println("exit menu");
 	}
 
 }

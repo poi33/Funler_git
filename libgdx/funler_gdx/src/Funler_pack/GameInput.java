@@ -19,19 +19,19 @@ public class GameInput implements InputProcessor {
 			Gdx.app.exit();
 			break;
 		case Input.Keys.LEFT:
-			//if (!funler.mapc.mapHit(1))
-				funler.player.x -= 1;
+			// if (!funler.mapc.mapHit(1))
+			funler.player.x -= 1;
 			break;
 		case Input.Keys.RIGHT:
-			//if (!funler.mapc.mapHit(3))
-				funler.player.x += 1;
+			// if (!funler.mapc.mapHit(3))
+			funler.player.x += 1;
 			break;
 		case Input.Keys.UP:
-			//if (!funler.mapc.mapHit(2))
-				funler.player.y += 1;
+			// if (!funler.mapc.mapHit(2))
+			funler.player.y += 1;
 			break;
 		case Input.Keys.DOWN:
-			//if (!funler.mapc.mapHit(4))
+			// if (!funler.mapc.mapHit(4))
 			funler.player.y -= 1;
 			break;
 		case Input.Keys.M:
@@ -39,9 +39,11 @@ public class GameInput implements InputProcessor {
 			funler.mainscreen.mapc.swapMini();
 			break;
 		case Input.Keys.O:
-			Gdx.input.setInputProcessor(funler.guiop.options);
-			//if (funler.getScreen() != GUIoption)
-			funler.setGuiOptions();
+
+			if (funler.getScreen().getClass().equals(PlayScreen.class)) {
+				Gdx.input.setInputProcessor(funler.guiop.options);
+				funler.setGuiOptions();
+			}
 			break;
 		case Input.Keys.R:
 			funler.mainscreen.mapc.generateNew();

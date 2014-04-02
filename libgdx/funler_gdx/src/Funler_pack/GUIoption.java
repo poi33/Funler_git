@@ -138,7 +138,6 @@ public class GUIoption implements Screen {
 
 	@Override
 	public void show() {
-		System.out.println("Starting options");
 		resetButtons();
 	}
 
@@ -160,7 +159,6 @@ public class GUIoption implements Screen {
 
 	@Override
 	public void hide() {
-		System.out.println("exit menu");
 	}
 	
 	/**

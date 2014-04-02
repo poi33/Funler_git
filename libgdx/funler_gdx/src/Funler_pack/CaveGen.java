@@ -6,23 +6,27 @@ public class CaveGen extends Map {
 		super(mapX, mapY, player);
 
 		// randGen();
-		mapWidth = mapX;
-		mapHeight = mapY;
+		
 		percentAreWalls = 40;
 
 		randomFillMap();
 		makeCaverns();
 
 	}
+	
+	CaveGen(int mapX, int mapY, Tile[][] map) {
+		super(mapX, mapY, map);
+		
+		percentAreWalls = 40;
+		
+	}
 
-	public int mapWidth;
-	public int mapHeight;
 	public int percentAreWalls;
 
 	public void makeCaverns() {
 		// By initilizing column in the outter loop, its only created ONCE
-		for (int column = 0, row = 0; row <= mapHeight - 1; row++) {
-			for (column = 0; column <= mapWidth - 1; column++) {
+		for (int column = 0, row = 0; row <= mapY - 1; row++) {
+			for (column = 0; column <= mapX - 1; column++) {
 				tileMap[column][row].setType(placeWallLogic(column, row));
 			}
 		}
@@ -91,15 +95,15 @@ public class CaveGen extends Map {
 	boolean isOutOfBounds(int x, int y) {
 		if (x < 0 || y < 0) {
 			return true;
-		} else if (x > mapWidth - 1 || y > mapHeight - 1) {
+		} else if (x > mapX - 1 || y > mapY - 1) {
 			return true;
 		}
 		return false;
 	}
 
 	public void blankMap() {
-		for (int row = 0; row < mapHeight; row++) {
-			for (int column = 0; column < mapWidth; column++) {
+		for (int row = 0; row < mapX; row++) {
+			for (int column = 0; column < mapY; column++) {
 				tileMap[row][column] = new Tile(row, column, 0);
 			}
 		}
@@ -109,18 +113,18 @@ public class CaveGen extends Map {
 		blankMap();
 
 		int mapMiddle = 0; // Temp variable
-		for (int row = 0; row < mapHeight; row++) {
-			for (int column = 0; column < mapWidth; column++) {
+		for (int row = 0; row < mapY; row++) {
+			for (int column = 0; column < mapX; column++) {
 				// If coordinants lie on the the edge of the map (creates a
 				// border)
 				if (row == 0 || column == 0) {
 					tileMap[row][column].setType(1);
-				} else if (row == mapWidth - 1 || column == mapHeight - 1) {
+				} else if (row == mapX - 1 || column == mapY - 1) {
 					tileMap[column][row].setType(1);
 				}
 				// Else, fill with a wall a random percent of the time
 				else {
-					mapMiddle = (mapHeight / 2);
+					mapMiddle = (mapY / 2);
 
 					if (row == mapMiddle && column == mapMiddle) {
 						tileMap[row][column].setType(0);

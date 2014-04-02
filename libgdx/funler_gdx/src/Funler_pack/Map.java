@@ -34,6 +34,14 @@ abstract class Map implements MapGenerator {
 
 		tileMap = new Tile[mapX][mapY];
 	}
+	
+	Map(int mapX, int mapY, Tile[][] tileMap) {
+		sr = new ShapeRenderer();
+		this.mapX = mapX;
+		this.mapY = mapY;
+		
+		this.tileMap = tileMap;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -89,7 +97,7 @@ abstract class Map implements MapGenerator {
 	public Tile getEmpty() { //
 		for(int i=0; i<mapX; i++) {
 			for(int j=0; j<mapY; j++) {
-				System.out.println(tileMap[i][j].getType());
+				//System.out.println(tileMap[i][j].getType());
 				if(tileMap[i][j].getType() == 0) return tileMap[i][j];
 			}
 		}
