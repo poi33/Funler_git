@@ -41,8 +41,13 @@ public class GameInput implements InputProcessor {
 			funler.mainscreen.mapc.swapMini();
 			break;
 		case Input.Keys.O:
+<<<<<<< HEAD
 			funler.setScreen(funler.guiop);
 			Gdx.input.setInputProcessor(funler.guiop.options);
+=======
+			//if (funler.getScreen() != GUIoption)
+			funler.setGuiOptions();
+>>>>>>> 0efa16e5d39a5ec3454f198a7beb3f23f7c9f7d4
 			break;
 		case Input.Keys.R:
 			funler.mainscreen.mapc.generateNew();
