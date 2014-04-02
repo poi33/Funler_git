@@ -61,6 +61,7 @@ public class SeedMap extends Map implements MapGenerator {
 
 		int tmpx = Gdx.graphics.getWidth() / Funler.TILE_SIZE-1;
 		int tmpy = Gdx.graphics.getHeight() / Funler.TILE_SIZE-1;
+		System.out.println(Gdx.graphics.getWidth() + " | " + Gdx.graphics.getHeight());
 		
 		//int dx = Gdx.graphics.getWidth() % Funler.TILE_SIZE;
 		//int dy = Gdx.graphics.getHeight() % Funler.TILE_SIZE;

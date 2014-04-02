@@ -54,7 +54,7 @@ public class Funler extends Game implements ApplicationListener {
 	public void setScreenOption() {
 		if (scop == null)
 			scop = new ScreenOptions(this);
-		Gdx.input.setInputProcessor(scop.options);
+		Gdx.input.setInputProcessor(scop.stage);
 		setScreen(scop);
 	}
 

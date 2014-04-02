@@ -1,7 +1,5 @@
 package Funler_pack;
 
-import utils.HexColor;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -14,14 +12,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class ScreenOptions implements Screen {
@@ -33,7 +27,7 @@ public class ScreenOptions implements Screen {
 	SpriteBatch batch;
 	Skin skin;
 
-	Stage options;
+	public Stage stage;
 	Table table;
 	
 	boolean fullScreen;
@@ -59,7 +53,7 @@ public class ScreenOptions implements Screen {
 		bfont = new BitmapFont();
 		this.game = main;
 		batch = new SpriteBatch();
-		options = new Stage();
+		stage = new Stage();
 
 		skin = new Skin();
 
@@ -81,7 +75,7 @@ public class ScreenOptions implements Screen {
 
 		table = new Table();
 		table.setFillParent(true);
-		options.addActor(table);
+		stage.addActor(table);
 
 		full = simpleButton("Fullscreen"+full, -100);
 		table.addActor(full);
@@ -90,14 +84,15 @@ public class ScreenOptions implements Screen {
 
 		res1.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.graphics.setDisplayMode(1600, 900, true);
+				Gdx.graphics.setDisplayMode(1600, 900, false);
+				game.setScreenOption();
 			}
 		});
 
 		// table.add(new Image(skin.newDrawable("white",
 		// Color.WHITE))).size(64);
 
-		back =simpleButton("Back", 700);
+		back =simpleButton("Back", 100);
 		table.addActor(back);
 
 		back.addListener(new ChangeListener() {
@@ -105,13 +100,14 @@ public class ScreenOptions implements Screen {
 				game.setGuiOptions();
 			}
 		});
+		table.addActor(back);
 
 	}
 	
 	private TextButton simpleButton(String s, int downY) {
 		TextButton init = new TextButton(s, skin);
-		init.setPosition(options.getWidth() / 2 - init.getMinWidth() / 2,
-				options.getHeight() / 2 - downY);
+		init.setPosition(stage.getWidth() / 2 - init.getMinWidth() / 2,
+				stage.getHeight() / 2 - downY);
 		init.setTransform(true);
 		init.setScale(2);
 		return init;
@@ -119,7 +115,7 @@ public class ScreenOptions implements Screen {
 	
 	@Override
 	public void resize(int width, int height) {
-		options.setViewport(width, height, true);
+		//setViewport(width, height, true);
 	}
 
 	@Override
@@ -150,14 +146,14 @@ public class ScreenOptions implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		options.act();
+		stage.act();
 
-		options.draw();
+		stage.draw();
 		batch.begin();
-		bfont.draw(batch, "Screen Options", Funler.W / 2, Funler.H - 130);
+		bfont.draw(batch, "Screen stage", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() /5);
 		batch.end();
 
-		Table.drawDebug(options);
+		Table.drawDebug(stage);
 	}
 
 	@Override
