@@ -126,6 +126,7 @@ public class GUIoption implements Screen {
 	@Override
 	public void show() {
 		System.out.println("Starting options");
+		resetButtons();
 	}
 
 	@Override
@@ -147,6 +148,15 @@ public class GUIoption implements Screen {
 	@Override
 	public void hide() {
 		System.out.println("exit menu");
+	}
+	
+	/**
+	 * resets the buttons states -> unclicked!! woah
+	 * Consider destroy / recreate entire menu instead
+	 */
+	public void resetButtons(){
+		//resume.setChecked(false);
+		//exit.setChecked(false);
 	}
 
 }

@@ -29,14 +29,9 @@ abstract class Map implements MapGenerator {
 		this.player = player;
 		this.mapX = mapX;
 		this.mapY = mapY;
-<<<<<<< HEAD
 		mapCurr = new Vector2(player.x, player.y);
 		mapDest = mapCurr.cpy().scl(Funler.TILE_SIZE);
-		
-=======
-		mapCurr = mapDest = new Vector2(player.x, player.y);
 
->>>>>>> 1907c5b23887a10ccdde287c8defdc41c04b4de1
 		tileMap = new Tile[mapX][mapY];
 	}
 
@@ -74,16 +69,6 @@ abstract class Map implements MapGenerator {
 		return null;
 	}
 
-	public Tile getEmpty() {
-		for (int i = 0; i < mapX; i++) {
-			for (int j = 0; j < mapY; j++) {
-				if (tileMap[i][j].getType() == 0)
-					return tileMap[i][j];
-			}
-		}
-		return null;
-	}
-
 	/***
 	 * Random generated tiles
 	 */
@@ -100,7 +85,6 @@ abstract class Map implements MapGenerator {
 			}
 		}
 	}
-<<<<<<< HEAD
 	
 	public Tile getEmpty() {
 		for(int i=0; i<mapX; i++) {
@@ -111,8 +95,6 @@ abstract class Map implements MapGenerator {
 		}
 		return null;
 	}
-=======
->>>>>>> 1907c5b23887a10ccdde287c8defdc41c04b4de1
 
 	/***
 	 * Random generated tiles (in blocks not singles)
@@ -204,7 +186,6 @@ abstract class Map implements MapGenerator {
 
 		for (int i = 0; i < mapX; i++) {
 			for (int j = 0; j < mapY; j++) {
-<<<<<<< HEAD
 				System.out.println(player.x + ", " + player.y);
 				if (player.x == i && player.y == j) {
 					sr.setColor(new HexColor("0xffffff"));
@@ -218,31 +199,15 @@ abstract class Map implements MapGenerator {
 				}
 			}
 		}
-=======
-				if (tileMap[i][j].getType() != 1) {
-					sr.rect(sc + (i * sc), j * sc, sc, sc);
-				}
-			}
-		}
-
 		sr.setColor(new HexColor("#ffffff"));
 		// reduse moveX to one interval at the time.
 		sr.rect(-player.x * sc, -player.y * sc, sc, sc);
 
->>>>>>> 1907c5b23887a10ccdde287c8defdc41c04b4de1
 		sr.end();
 	}
 
 	public void update(float dt) {
 		Vector2 vel = new Vector2();
-<<<<<<< HEAD
-		//TODO
-		mapDest = new Vector2(player.x, player.y);
-		vel = mapDest.cpy().scl(Funler.TILE_SIZE);
-		vel.sub(mapCurr);
-		if (vel.len() < Map.TILE_SIZE / 10) {
-			mapCurr.add(vel);
-=======
 		// TODO
 		mapDest = new Vector2(player.x * Funler.TILE_SIZE, player.y
 				* Funler.TILE_SIZE);
@@ -250,7 +215,6 @@ abstract class Map implements MapGenerator {
 		vel.sub(mapCurr);
 		if (vel.len() < Funler.TILE_SIZE / 10) {
 			mapCurr = mapDest.cpy();
->>>>>>> 1907c5b23887a10ccdde287c8defdc41c04b4de1
 		} else {
 			vel.nor();
 			vel.scl(moveSpeed * dt);

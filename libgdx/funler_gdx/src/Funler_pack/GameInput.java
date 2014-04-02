@@ -42,6 +42,7 @@ public class GameInput implements InputProcessor {
 			break;
 		case Input.Keys.O:
 			funler.setScreen(funler.guiop);
+			Gdx.input.setInputProcessor(funler.guiop.options);
 			break;
 		case Input.Keys.R:
 			funler.mainscreen.mapc.generateNew();
