@@ -35,7 +35,7 @@ public class Player {
 		//Calculate offsets from tile grid.
 		float ox = (Funler.W/2) % Funler.TILE_SIZE;
 		float oy = (Funler.H/2) % Funler.TILE_SIZE;
-		sr.rect(Funler.W / 2 - ox, Funler.H / 2 - oy, Funler.TILE_SIZE, Funler.TILE_SIZE);
+		sr.rect((Funler.W / 2)-ox, (Funler.H / 2)-oy, Funler.TILE_SIZE, Funler.TILE_SIZE);
 		sr.end();
 	}
 	

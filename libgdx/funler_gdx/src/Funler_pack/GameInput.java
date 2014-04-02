@@ -22,19 +22,19 @@ public class GameInput implements InputProcessor {
 			break;
 		case Input.Keys.LEFT:
 			//if (!funler.mapc.mapHit(1))
-				funler.player.x += 1;
+				funler.player.x -= 1;
 			break;
 		case Input.Keys.RIGHT:
 			//if (!funler.mapc.mapHit(3))
-				funler.player.x -= 1;
+				funler.player.x += 1;
 			break;
 		case Input.Keys.UP:
 			//if (!funler.mapc.mapHit(2))
-				funler.player.y -= 1;
+				funler.player.y += 1;
 			break;
 		case Input.Keys.DOWN:
 			//if (!funler.mapc.mapHit(4))
-			funler.player.y += 1;
+			funler.player.y -= 1;
 			break;
 		case Input.Keys.M:
 			funler.player.hide();

@@ -2,6 +2,7 @@ package Funler_pack;
 
 import utils.HexColor;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
@@ -19,19 +20,19 @@ public class SeedMap extends Map implements MapGenerator {
 		j += 5000;
 		int calc;
 		float an;
-		
+
 		Vector2 tmp = new Vector2(i, j);
 		Vector2 tmp2 = new Vector2(-i, j);
 		Vector2 tmp3 = new Vector2(i, -j);
 		Vector2 tmp4 = new Vector2(-i, -j);
 
-		an = i+seed / 360f;
+		an = i + seed / 360f;
 		tmp = tmp.setAngleRad(an);
-		an = j+seed / 360f;
+		an = j + seed / 360f;
 		tmp2 = tmp2.setAngleRad(an);
-		an = seed/(seed*i+1) / 360f;
+		an = seed / (seed * i + 1) / 360f;
 		tmp3 = tmp3.setAngleRad(an);
-		an = seed/(seed*j+1) / 360f;
+		an = seed / (seed * j + 1) / 360f;
 		tmp4 = tmp4.setAngleRad(an);
 
 		float avrage;
@@ -58,26 +59,23 @@ public class SeedMap extends Map implements MapGenerator {
 		int px = player.x;
 		int py = player.y;
 
-		int tresh = 50;
-		int tmpx = -tresh / 2, tmpy = -tresh / 2, circnumb = 0;
-		int count = 0;
+		int tmpx = Gdx.graphics.getWidth() / Funler.TILE_SIZE-1;
+		int tmpy = Gdx.graphics.getHeight() / Funler.TILE_SIZE-1;
+		
+		//int dx = Gdx.graphics.getWidth() % Funler.TILE_SIZE;
+		//int dy = Gdx.graphics.getHeight() % Funler.TILE_SIZE;
+		
 		sr.begin(ShapeType.Filled);
 
-		while (count != tresh) {
-			if (seedit(px + tmpx, py + tmpy) == 1)
-				sr.setColor(new HexColor("#634f0e"));
-			else
-				sr.setColor(new HexColor("#0e2563"));
+		for (int xer=1; xer<tmpx; xer++) {
+			for (int yer=1; yer<tmpy; yer++) {
+				if (seedit(px + xer, py + yer) == 1)
+					sr.setColor(new HexColor("#634f0e"));
+				else
+					sr.setColor(new HexColor("#0e2563"));
 
-			sr.rect(Funler.W / 2 + (tmpx * Funler.TILE_SIZE), Funler.H / 2
-					+ (tmpy * Funler.TILE_SIZE), Funler.TILE_SIZE,
-					Funler.TILE_SIZE);
-			if (tmpx == tresh) {
-				tmpy++;
-				tmpx = -tresh / 2;
-				count++;
+				sr.rect(xer * Funler.TILE_SIZE, yer * Funler.TILE_SIZE, Funler.TILE_SIZE,	Funler.TILE_SIZE);
 			}
-			tmpx++;
 		}
 		sr.end();
 
