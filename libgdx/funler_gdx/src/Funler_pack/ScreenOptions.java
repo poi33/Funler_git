@@ -1,5 +1,8 @@
 package Funler_pack;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -35,6 +38,7 @@ public class ScreenOptions implements Screen {
 	boolean fullScreen;
 
 	private TextButton full;
+	private TextButton scrDef;
 	private TextButton res[];
 	
 	private TextButton back;
@@ -71,17 +75,44 @@ public class ScreenOptions implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		full = simpleButton("Fullscreen"+full, -100);
+		full = simpleButton("Fullscreen "+fullScreen, 1.5f);
 		table.addActor(full);
 		
+		full.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				fullScreen = fullScreen ? false : true;
+				full.setText("Fullscreen " + fullScreen);
+			}
+			
+		});
+		
+		scrDef = simpleButton("Set screen", 1.7f);
+		table.addActor(scrDef);
+		
+		scrDef.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				Dimension screendim = Toolkit.getDefaultToolkit().getScreenSize();
+				int sw = screendim.width;
+				int sh = screendim.height;
+				Gdx.graphics.setDisplayMode(sw, sh, fullScreen);
+				game.resize(sw, sh);
+			}
+			
+		});
+		
+		
+		
 		res = new TextButton[1];
-		res[0] = simpleButton("1600 - 900", 0);
+		res[0] = simpleButton("1600 - 900", 1.9f);
 		table.addActor(res[0]);
 
 		res[0].addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.graphics.setDisplayMode(1600, 900, false);
-				resize(1600, 900);
+				Gdx.graphics.setDisplayMode(1600, 900, fullScreen);
+				game.resize(1600, 900);
 				game.setScreenOption();
 			}
 		});
@@ -91,7 +122,7 @@ public class ScreenOptions implements Screen {
 		// table.add(new Image(skin.newDrawable("white",
 		// Color.WHITE))).size(64);
 
-		back =simpleButton("Back", 100);
+		back =simpleButton("Back", 10);
 		table.addActor(back);
 
 		back.addListener(new ChangeListener() {
@@ -105,10 +136,9 @@ public class ScreenOptions implements Screen {
 
 	}
 	
-	private TextButton simpleButton(String s, int downY) {
+	private TextButton simpleButton(String s, float downY) {
 		TextButton init = new TextButton(s, skin);
-		init.setPosition(stage.getWidth() / 2 - init.getMinWidth() / 2,
-				stage.getHeight() / 2 - downY);
+		init.setPosition(Gdx.graphics.getWidth() /2, Gdx.graphics.getHeight()/downY);
 		init.setTransform(true);
 		init.setScale(2);
 		return init;

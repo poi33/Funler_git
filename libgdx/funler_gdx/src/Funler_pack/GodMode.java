@@ -5,6 +5,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+@Deprecated 
+/****
+ * Class should be unnecessary to be honest.
+ * In case of heavy debugging it can be used. probably need some re writing 
+ */
 public class GodMode {
 	private ShapeRenderer sr;
 	private BitmapFont font;

@@ -1,41 +1,56 @@
 package Funler_pack;
 
-public class CaveGen extends Map {
 
-	CaveGen(int mapX, int mapY, Player player) {
-		super(mapX, mapY, player);
+/******
+ * Remade this clas so its a layer to be applied to a map.
+ * In other words this just convers a given map (preferably single random tile genereated)
+ * In case of lazyness there is a method inside this class that will make random generated for you(not with seed)
+ * @author Anonym
+ *
+ */
+public class CaveGen {
+	public int percentAreWalls;
+	int rows;
+	int columns;
+	
+	Tile[][] tileset;
 
-		// randGen();
+	/*CaveGen(Tile[][] tileset) {
+		rows = tileset.length;
+		columns = tileset[0].length;
+		
+		this.tileset = tileset;
 		
 		percentAreWalls = 40;
 
-		randomFillMap();
-		makeCaverns();
-
+	}*/
+	
+	Tile[][] getTiles() {
+		return tileset;
 	}
 	
-	CaveGen(int mapX, int mapY, Tile[][] map) {
-		super(mapX, mapY, map);
-		
-		percentAreWalls = 40;
-		
+	public void setTiles(Tile[][] mrT) {
+		tileset = mrT;
 	}
 
-	public int percentAreWalls;
-
-	public void makeCaverns() {
+	public Tile[][] makeCaverns(Tile[][] tileset) {
+		this.tileset = tileset;
+		rows = tileset.length;
+		columns = tileset[0].length;
+		
 		// By initilizing column in the outter loop, its only created ONCE
-		for (int column = 0, row = 0; row <= mapY - 1; row++) {
-			for (column = 0; column <= mapX - 1; column++) {
-				tileMap[column][row].setType(placeWallLogic(column, row));
+		for (int i = 0, j; i < rows; i++) {
+			for (j = 0; j < columns; j++) {
+				tileset[i][j].setType(placeWallLogic(i, j));
 			}
 		}
+		return tileset;
 	}
 
 	int placeWallLogic(int x, int y) {
 		int numWalls = GetAdjacentWalls(x, y, 1, 1);
 
-		if (tileMap[x][y].getType() == 1) {
+		if (tileset[x][y].getType() == 1) {
 			// Is wall
 			if (numWalls >= 4) {
 				return 1;
@@ -82,11 +97,11 @@ public class CaveGen extends Map {
 			return true;
 		}
 
-		if (tileMap[x][y].getType() == 1) {
+		if (tileset[x][y].getType() == 1) {
 			return true;
 		}
 
-		if (tileMap[x][y].getType() == 0) {
+		if (tileset[x][y].getType() == 0) {
 			return false;
 		}
 		return false;
@@ -95,47 +110,47 @@ public class CaveGen extends Map {
 	boolean isOutOfBounds(int x, int y) {
 		if (x < 0 || y < 0) {
 			return true;
-		} else if (x > mapX - 1 || y > mapY - 1) {
+		} else if (x > rows - 1 || y > columns - 1) {
 			return true;
 		}
 		return false;
 	}
 
-	public void blankMap() {
-		for (int row = 0; row < mapX; row++) {
-			for (int column = 0; column < mapY; column++) {
-				tileMap[row][column] = new Tile(row, column, 0);
+	/*public void blankMap() {
+		for (int row = 0; row < rows; row++) {
+			for (int column = 0; column < column; column++) {
+				tileset[row][column] = new Tile(row, column, 0);
 			}
 		}
-	}
+	}*/
 
-	public void randomFillMap() {
+	/*public void randomFillMap() {
 		blankMap();
 
 		int mapMiddle = 0; // Temp variable
-		for (int row = 0; row < mapY; row++) {
-			for (int column = 0; column < mapX; column++) {
+		for (int row = 0; row < columns; row++) {
+			for (int column = 0; column < rows; column++) {
 				// If coordinants lie on the the edge of the map (creates a
 				// border)
 				if (row == 0 || column == 0) {
-					tileMap[row][column].setType(1);
-				} else if (row == mapX - 1 || column == mapY - 1) {
-					tileMap[column][row].setType(1);
+					tileset[row][column].setType(1);
+				} else if (row == rows - 1 || column == column - 1) {
+					tileset[column][row].setType(1);
 				}
 				// Else, fill with a wall a random percent of the time
 				else {
-					mapMiddle = (mapY / 2);
+					mapMiddle = (column / 2);
 
 					if (row == mapMiddle && column == mapMiddle) {
-						tileMap[row][column].setType(0);
+						tileset[row][column].setType(0);
 					} else {
-						tileMap[row][column]
+						tileset[row][column]
 								.setType(randomPercent(percentAreWalls));
 					}
 				}
 			}
 		}
-	}
+	}*/
 
 	int randomPercent(int percent) {
 		if (percent >= Math.random() * 100) {
@@ -148,32 +163,16 @@ public class CaveGen extends Map {
 	 * Random generated tiles
 	 */
 	void randGen() {
-		for (int i = 0; i < mapX; i++) {
-			for (int j = 0; j < mapY; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
 				int r = (int) (Math.random() * 4.0f);
 				if (r == 0) {
-					tileMap[i][j] = new Tile(i, j, 1);
+					tileset[i][j] = new Tile(i, j, 1);
 				} else {
-					tileMap[i][j] = new Tile(i, j, 0);
+					tileset[i][j] = new Tile(i, j, 0);
 				}
 			}
 		}
 	}
-
-	/**
-	 * This method is for generating a new map. Manly used for debug could be
-	 * used for multiple generated instances
-	 */
-	@Override
-	public void generateNew() {
-		// randomFillMap();
-
-		randomBlock();
-		tileMap[6][5].setType(0);
-		Tile tmp = getEmpty();
-		player.setPosition(-tmp.getX(), -tmp.getY());
-
-		// makeCaverns();
-	}
-
+	
 }

@@ -24,7 +24,7 @@ public class PlayScreen implements Screen {
 		// mapc = new ProceduralMapGenerator(Funler.W, Funler.H);
 		// mapc = new MapGen(mapWidth, mapHeight, this);
 		// mapc = new CaveGen(49, 49, player);
-		mapc = new SeedMap(49, 49, main.player, 3242342);
+		mapc = new SeedMap(main.player, 2323.00987f);
 
 		// TODO Need to get the next to method to work for the diffrent classes
 		// Tile emptyTile = mapc.getEmpty();
@@ -52,7 +52,7 @@ public class PlayScreen implements Screen {
 			if (mode == null) {
 				mode = new GodMode();
 			}
-			mode.showAll(main.player.x, main.player.y, mapc.getTileMap());
+			mode.showAll(main.player.x, main.player.y, mapc.getCurrentChunk());
 
 			// return;
 		}

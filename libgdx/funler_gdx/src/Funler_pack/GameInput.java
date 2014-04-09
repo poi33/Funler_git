@@ -19,20 +19,20 @@ public class GameInput implements InputProcessor {
 			Gdx.app.exit();
 			break;
 		case Input.Keys.LEFT:
-			// if (!funler.mapc.mapHit(1))
-			funler.player.x -= 1;
+			if (funler.mainscreen.mapc.mapHit(1))
+				funler.player.x -= 1;
 			break;
 		case Input.Keys.RIGHT:
-			// if (!funler.mapc.mapHit(3))
-			funler.player.x += 1;
+			if (funler.mainscreen.mapc.mapHit(3))
+				funler.player.x += 1;
 			break;
 		case Input.Keys.UP:
-			// if (!funler.mapc.mapHit(2))
-			funler.player.y += 1;
+			if (funler.mainscreen.mapc.mapHit(2))
+				funler.player.y += 1;
 			break;
 		case Input.Keys.DOWN:
-			// if (!funler.mapc.mapHit(4))
-			funler.player.y -= 1;
+			if (funler.mainscreen.mapc.mapHit(4))
+				funler.player.y -= 1;
 			break;
 		case Input.Keys.M:
 			funler.player.hide();
@@ -62,8 +62,31 @@ public class GameInput implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
+		switch (character) {
+		case 'a':
+		case 'A':
+			if (funler.mainscreen.mapc.mapHit(1))
+				funler.player.x -= 1;
+			break;
+		case 'd':
+		case 'D':
+			if (funler.mainscreen.mapc.mapHit(3))
+				funler.player.x += 1;
+			break;
+		case 'w':
+		case 'W':
+			if (funler.mainscreen.mapc.mapHit(2))
+				funler.player.y += 1;
+			break;
+		case 's':
+		case 'S':
+			if (funler.mainscreen.mapc.mapHit(4))
+				funler.player.y -= 1;
+			break;
+		default:
+			return false;
+		}
+		return true;
 	}
 
 	@Override

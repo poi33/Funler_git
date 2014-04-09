@@ -2,6 +2,7 @@ package Funler_pack;
 
 import utils.HexColor;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -10,7 +11,7 @@ abstract class Map implements MapGenerator {
 
 	protected ShapeRenderer sr;
 
-	protected Tile[][] tileMap;
+	protected Tile[][] curChunk;
 
 	private Vector2 mapCurr; // current draw position
 	public Vector2 mapDest; // moving towards
@@ -21,7 +22,7 @@ abstract class Map implements MapGenerator {
 
 	protected Player player;
 
-	private Boolean fullmap = false; // draw a map of the playable area
+	protected Boolean fullmap = false; // draw a map of the playable area
 
 	Map(int mapX, int mapY, Player player) {
 		sr = new ShapeRenderer();
@@ -32,24 +33,30 @@ abstract class Map implements MapGenerator {
 		mapCurr = new Vector2(player.x, player.y);
 		mapDest = mapCurr.cpy().scl(Funler.TILE_SIZE);
 
-		tileMap = new Tile[mapX][mapY];
+		curChunk = new Tile[mapX][mapY];
 	}
-	
-	Map(int mapX, int mapY, Tile[][] tileMap) {
+
+	Map(Player player) {
 		sr = new ShapeRenderer();
-		this.mapX = mapX;
-		this.mapY = mapY;
-		
-		this.tileMap = tileMap;
+		this.player = player;
+		mapCurr = new Vector2(player.x, player.y);
+		mapDest = mapCurr.cpy().scl(Funler.TILE_SIZE);
+	}
+
+	Map(Tile[][] curChunk) {
+		sr = new ShapeRenderer();
+		mapX = curChunk.length;
+		mapY = curChunk[0].length;
+		this.curChunk = curChunk;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see funler.mapGenerator#getTileMap()
+	 * @see funler.mapGenerator#getcurChunk()
 	 */
-	public Tile[][] getTileMap() {
-		return tileMap;
+	public Tile[][] getCurrentChunk() {
+		return curChunk;
 	}
 
 	/*
@@ -57,23 +64,8 @@ abstract class Map implements MapGenerator {
 	 * 
 	 * @see funler.mapGenerator#getCurrentTile(int, int)
 	 */
-	public Tile getCurrentTile(int moveX, int moveY) {
-		for (int i = mapX; i > 0; i--) {
-			float dx = mapX * Funler.TILE_SIZE - Funler.W / 2;
-			if ((mapX - i) * Funler.TILE_SIZE - dx - 49 <= moveX
-					&& (mapX - i) * Funler.TILE_SIZE + 49 - dx >= moveX)
-				for (int j = mapY; j > 0; j--) {
-					float dy = mapY * Funler.TILE_SIZE - Funler.H / 2;
-					if (mapY * Funler.TILE_SIZE - j * Funler.TILE_SIZE - dy
-							- 49 <= moveY
-							&& mapY * Funler.TILE_SIZE - j * Funler.TILE_SIZE
-									+ 49 - dy >= moveY) {
-						return tileMap[i][j];
-					}
-				}
-		}
-		System.out
-				.println("Error in getCurrentTile.\nProbebly moved outside the playable area");
+	public Tile getCurrentTile() {
+
 		return null;
 	}
 
@@ -85,20 +77,21 @@ abstract class Map implements MapGenerator {
 			for (int j = 0; j < mapY; j++) {
 				int r = (int) (Math.random() * 2);
 				if (r == 0) {
-					// tileMap[i][j] = new Tile(i, j, 1);
-					tileMap[i][j] = new Tile(i, j, 1);
+					// curChunk[i][j] = new Tile(i, j, 1);
+					curChunk[i][j] = new Tile(i, j, 1);
 				} else {
-					tileMap[i][j] = new Tile(i, j, 0);
+					curChunk[i][j] = new Tile(i, j, 0);
 				}
 			}
 		}
 	}
-	
+
 	public Tile getEmpty() { //
-		for(int i=0; i<mapX; i++) {
-			for(int j=0; j<mapY; j++) {
-				//System.out.println(tileMap[i][j].getType());
-				if(tileMap[i][j].getType() == 0) return tileMap[i][j];
+		for (int i = 0; i < mapX; i++) {
+			for (int j = 0; j < mapY; j++) {
+				// System.out.println(curChunk[i][j].getType());
+				if (curChunk[i][j].getType() == 0)
+					return curChunk[i][j];
 			}
 		}
 		return null;
@@ -118,16 +111,16 @@ abstract class Map implements MapGenerator {
 					break;
 				int r = (int) (Math.random() * 4);
 				if (r == 0) {
-					tileMap[i][j].setType(1);
-					tileMap[i + 1][j].setType(1);
-					tileMap[i][j + 1].setType(1);
-					tileMap[i + 1][j + 1].setType(1);
+					curChunk[i][j].setType(1);
+					curChunk[i + 1][j].setType(1);
+					curChunk[i][j + 1].setType(1);
+					curChunk[i + 1][j + 1].setType(1);
 
 				} else {
-					tileMap[i][j].setType(0);
-					tileMap[i + 1][j].setType(0);
-					tileMap[i][j + 1].setType(0);
-					tileMap[i + 1][j + 1].setType(0);
+					curChunk[i][j].setType(0);
+					curChunk[i + 1][j].setType(0);
+					curChunk[i][j + 1].setType(0);
+					curChunk[i + 1][j + 1].setType(0);
 
 				}
 			}
@@ -135,17 +128,15 @@ abstract class Map implements MapGenerator {
 	}
 
 	/**
-	 * Return if the tile to the next direction is a tile or not.
+	 * Return if the tile to the next direction is a tile or not. Note direction
+	 * of the switch: 1 = left; 2 = up; 3 = right; 4 = down;
 	 * 
-	 * Note direction of the switch: 1 = left; 2 = up; 3 = right; 4 = down;
-	 * 
-	 * @param horizontal
-	 * @param vertican
+	 * @param direction
 	 * @return boolean
 	 */
 	public boolean mapHit(int direction) {
-		int x = -player.x;
-		int y = -player.y;
+		int x = player.x;
+		int y = player.y;
 		switch (direction) {
 		case 1:
 			x--;
@@ -160,56 +151,76 @@ abstract class Map implements MapGenerator {
 			y--;
 			break;
 		}
-		if (x < mapX && y < mapY && x > 0 && y > 0) {
-			if (tileMap[x][y].getType() == 1) {
-				return true;
-			} else {
-				return false;
-			}
-
-		} else {
+		if (x < 0 || y < 0)
 			return true;
+		if (curChunk[x][y].getType() == 1) {
+			return true;
+		} else {
+			return false;
 		}
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see funler.mapGenerator#miniMap(int, int)
-	 */
 	public void drawMiniMap() {
 		sr.begin(ShapeType.Filled);
-		// minimap scale
-		float sc;
-		if (mapX >= 200) {
-			sc = 3;
-		} else if (mapX >= 100) {
-			sc = 5;
-		} else if (mapX >= 25) {
-			sc = 10;
+		float scX = Gdx.graphics.getWidth() / (float) curChunk.length;
+		float scY = Gdx.graphics.getHeight() / (float) curChunk[0].length;
+
+		float pushX = 0;
+		float pushY = 0;
+		if (scX > scY) {
+			scX = scY;
+			pushX = ((scY * curChunk.length) - Funler.W) / 2;
 		} else {
-			sc = 40;
+			scY = scX;
+			pushY = ((scX * curChunk[0].length) - Funler.H) / 2;
 		}
 
-		for (int i = 0; i < mapX; i++) {
-			for (int j = 0; j < mapY; j++) {
-				System.out.println(player.x + ", " + player.y);
-				if (player.x == i && player.y == j) {
-					sr.setColor(new HexColor("0xffffff"));
-					sr.rect( sc + (i * sc), j * sc,
-							sc, sc);
-				}
-				else if (tileMap[i][j].getType() != 1) {
+		for (int i = 0; i < curChunk.length; i++) {
+			for (int j = 0; j < curChunk[0].length; j++) {
+				if (curChunk[i][j].getType() != 1) {
 					sr.setColor(new HexColor("0x329632"));
-					sr.rect( sc + (i * sc), j * sc,
-							sc, sc);
+				} else {
+					sr.setColor(new HexColor("0x3D9999"));
 				}
+				sr.rect(i * scX - pushX, j * scY - pushY, scX, scY);
 			}
 		}
 		sr.setColor(new HexColor("#ffffff"));
 		// reduse moveX to one interval at the time.
-		sr.rect(-player.x * sc, -player.y * sc, sc, sc);
+		sr.rect(player.x * scX - pushX, player.y * scY - pushY, scX, scY);
+
+		sr.end();
+	}
+
+	public void drawMiniMap(int chunkX, int chunkY) {
+		sr.begin(ShapeType.Filled);
+		float scX = Gdx.graphics.getWidth() / (float) curChunk.length;
+		float scY = Gdx.graphics.getHeight() / (float) curChunk[0].length;
+
+		float pushX = 0;
+		float pushY = 0;
+		if (scX > scY) {
+			scX = scY;
+			pushX = ((scY * curChunk.length) - Funler.W) / 2;
+		} else {
+			scY = scX;
+			pushY = ((scX * curChunk[0].length) - Funler.H) / 2;
+		}
+
+		for (int i = 0; i < curChunk.length; i++) {
+			for (int j = 0; j < curChunk[0].length; j++) {
+				if (curChunk[i][j].getType() != 1) {
+					sr.setColor(new HexColor("0x329632"));
+				} else {
+					sr.setColor(new HexColor("0x3D9999"));
+				}
+				sr.rect(i * scX - pushX, j * scY - pushY, scX, scY);
+			}
+		}
+		sr.setColor(new HexColor("#ffffff"));
+		sr.rect((player.x - (chunkX * curChunk.length)) * scX - pushX,
+				(player.y - (chunkY * curChunk.length)) * scY - pushY, scX, scY);
 
 		sr.end();
 	}
@@ -252,7 +263,7 @@ abstract class Map implements MapGenerator {
 					break;
 				if (j * Funler.TILE_SIZE + mapCurr.y + sh < 0)
 					continue;
-				if (tileMap[i][j].getType() == 0) {
+				if (curChunk[i][j].getType() == 0) {
 					sr.setColor(new HexColor("#634f0e"));
 				} else {
 					sr.setColor(new HexColor("#0e2563"));
