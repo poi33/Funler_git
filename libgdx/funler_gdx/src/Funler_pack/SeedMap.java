@@ -33,7 +33,8 @@ public class SeedMap extends Map implements MapGenerator {
 	}
 
 	void init() {
-		cloverChunk = new Tile[mapX * 2][mapY * 2];
+		// cloverChunk = new Tile[chunkSize * 2][chunkSize * 2];
+		cloverChunk = new Tile[chunkSize*2][chunkSize*2];
 		caveTool = new CaveGen();
 	}
 
@@ -55,7 +56,27 @@ public class SeedMap extends Map implements MapGenerator {
 			y--;
 			break;
 		}
-		if (curChunk[x][y].getType() == 1) {
+
+		int tmpx = 0;
+		int tmpy = 0;
+
+		switch (clover) {
+		case 4:
+			tmpx = chunkSize;
+			break;
+		case 3:
+			break;
+		case 2:
+			tmpx = chunkSize;
+			tmpy = chunkSize;
+			break;
+		case 1:
+			tmpy = chunkSize;
+			break;
+		}
+
+		System.out.println(cloverChunk.length);
+		if (cloverChunk[tmpx + x][tmpy + y].getType() == 1) {
 			return true;
 		} else {
 			return false;
@@ -203,12 +224,12 @@ public class SeedMap extends Map implements MapGenerator {
 			Tile[][] rightDown) {
 		for (int i = 0; i < cloverChunk.length; i++) {
 			for (int j = 0; j < cloverChunk[0].length; j++) {
-				if (i > 50 && j > 50)
-					cloverChunk[i][j] = rightDown[i - 50][j - 50];
-				else if (i > 50)
-					cloverChunk[i][j] = right[i - 50][j];
-				else if (j > 50)
-					cloverChunk[i][j] = leftdown[i][j - 50];
+				if (i >= chunkSize && j >= chunkSize)
+					cloverChunk[i][j] = rightDown[i - chunkSize][j - chunkSize];
+				else if (i >= chunkSize)
+					cloverChunk[i][j] = right[i-chunkSize][j];
+				else if (j >= chunkSize)
+					cloverChunk[i][j] = leftdown[i][j-chunkSize];
 				else
 					cloverChunk[i][j] = left[i][j];
 
