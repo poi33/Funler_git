@@ -2,16 +2,17 @@ package Funler_pack;
 
 import utils.HexColor;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 
 public class SeedMap extends Map implements MapGenerator {
 
-	int chunkSize = 50;
-	int chunkx = 0; 
+	int chunkSize = 100;
+	int chunkx = 0;
 	int chunky = 0;
+	int clover;
+
+	protected Tile[][] cloverChunk;
 
 	private float seed;
 
@@ -21,15 +22,21 @@ public class SeedMap extends Map implements MapGenerator {
 	SeedMap(int mapX, int mapY, Player player, float seed) {
 		super(mapX, mapY, player);
 		this.seed = seed;
-		caveTool = new CaveGen();
+		init();
 	}
 
 	SeedMap(Player player, float seed) {
 		super(player);
 		this.seed = seed;
+		init();
+
+	}
+
+	void init() {
+		cloverChunk = new Tile[mapX * 2][mapY * 2];
 		caveTool = new CaveGen();
 	}
-	
+
 	@Override
 	public boolean mapHit(int direction) {
 		int x = player.x - (chunkx * curChunk.length);
@@ -48,8 +55,6 @@ public class SeedMap extends Map implements MapGenerator {
 			y--;
 			break;
 		}
-		if (x < 0 || y < 0 || x >= 50 || y >= 50)
-			return true;
 		if (curChunk[x][y].getType() == 1) {
 			return true;
 		} else {
@@ -59,8 +64,6 @@ public class SeedMap extends Map implements MapGenerator {
 	}
 
 	int seedit(int i, int j) {
-		// i += 5000;
-		// j += 5000;
 		int calc;
 		float an;
 
@@ -97,52 +100,120 @@ public class SeedMap extends Map implements MapGenerator {
 			return 1;
 	}
 
+	/***
+	 * Overrides the draw function of the map.class. This draws (in chunks) all
+	 * content to the map Draws only what is within the map range. (last mention
+	 * should be get rid of because it gives an advantage to players that have
+	 * bigger screens)
+	 * 
+	 */
+	// Calculation matrix.
+	// +1 for top
+	// +3 for bottom
+	// +1 for left
+	// +0 for right
+
+	// |--------|
+	// |1+1|1+0 |
+	// |3+1|3+0 |
+	// |--------|
 	@Override
 	public void draw() {
-		
+
 		chunkx = (int) Math.ceil((player.x + 1) / (double) chunkSize) - 1;
 		chunky = (int) Math.ceil((player.y + 1) / (double) chunkSize) - 1;
 
-		
 		curChunk = genChunk(chunkx, chunky);
 		curChunk = caveTool.makeCaverns(curChunk);
-		
+
+		sr.begin(ShapeType.Filled);
 		if (fullmap) {
 			drawMiniMap(chunkx, chunky);
+			sr.end();
 			return;
 		}
-		
-		sr.begin(ShapeType.Filled);
-		
-		// center chunk
+
+		// where in the current chunk calculation
+		int lastClover = clover;
+		clover = 0;
+		if ((player.x - (chunkx * chunkSize)) > chunkSize / 2)
+			clover += 0;
+		else
+			clover += 1;
+		if ((player.y - (chunky * chunkSize)) > chunkSize / 2)
+			clover += 1;
+		else
+			clover += 3;
+
+		boolean change = false;
+		if (clover != lastClover) {
+			change = true;
+		}
+
+		// center / current chunk
 		drawChunk(chunkx, chunky, curChunk);
+		Tile[][] first, sec, tri;
+		switch (clover) {
+		case 4:
+			first = genChunk(chunkx - 1, chunky);
+			sec = genChunk(chunkx - 1, chunky - 1);
+			tri = genChunk(chunkx, chunky - 1);
+			drawChunk(chunkx - 1, chunky, caveTool.makeCaverns(first));
+			drawChunk(chunkx - 1, chunky - 1, caveTool.makeCaverns(sec));
+			drawChunk(chunkx, chunky - 1, caveTool.makeCaverns(tri));
+			if (change)
+				combine(first, curChunk, sec, tri);
+			break;
+		case 3:
+			first = genChunk(chunkx + 1, chunky);
+			sec = genChunk(chunkx + 1, chunky - 1);
+			tri = genChunk(chunkx, chunky - 1);
+			drawChunk(chunkx + 1, chunky, caveTool.makeCaverns(first));
+			drawChunk(chunkx + 1, chunky - 1, caveTool.makeCaverns(sec));
+			drawChunk(chunkx, chunky - 1, caveTool.makeCaverns(tri));
+			if (change)
+				combine(curChunk, first, tri, sec);
+			break;
+		case 2:
+			first = genChunk(chunkx - 1, chunky);
+			sec = genChunk(chunkx - 1, chunky + 1);
+			tri = genChunk(chunkx, chunky + 1);
+			drawChunk(chunkx - 1, chunky, caveTool.makeCaverns(first));
+			drawChunk(chunkx - 1, chunky + 1, caveTool.makeCaverns(sec));
+			drawChunk(chunkx, chunky + 1, caveTool.makeCaverns(tri));
+			if (change)
+				combine(tri, sec, first, curChunk);
+			break;
+		case 1:
+			first = genChunk(chunkx + 1, chunky);
+			sec = genChunk(chunkx + 1, chunky + 1);
+			tri = genChunk(chunkx, chunky + 1);
+			drawChunk(chunkx + 1, chunky, caveTool.makeCaverns(first));
+			drawChunk(chunkx + 1, chunky + 1, caveTool.makeCaverns(sec));
+			drawChunk(chunkx, chunky + 1, caveTool.makeCaverns(tri));
+			if (change)
+				combine(first, sec, curChunk, tri);
+			break;
+		}
 
-		// left chunk
-		drawChunk(chunkx - 1, chunky,
-				caveTool.makeCaverns(genChunk(chunkx - 1, chunky)));
-		// up chunk
-		drawChunk(chunkx, chunky - 1,
-				caveTool.makeCaverns(genChunk(chunkx, chunky - 1)));
-		// right chunk
-		drawChunk(chunkx + 1, chunky,
-				caveTool.makeCaverns(genChunk(chunkx + 1, chunky)));
-		// down chunk
-		drawChunk(chunkx, chunky + 1,
-				caveTool.makeCaverns(genChunk(chunkx, chunky + 1)));
-
-		// int tmpx = Gdx.graphics.getWidth() / Funler.TILE_SIZE - 1;
-		// int tmpy = Gdx.graphics.getHeight() / Funler.TILE_SIZE - 1;
-
-		/*
-		 * for (int xer=1; xer<tmpx; xer++) { for (int yer=1; yer<tmpy; yer++) {
-		 * if (seedit(px + xer, py + yer) == 1) sr.setColor(new
-		 * HexColor("#634f0e")); else sr.setColor(new HexColor("#0e2563"));
-		 * 
-		 * sr.rect(xer * Funler.TILE_SIZE, yer * Funler.TILE_SIZE,
-		 * Funler.TILE_SIZE, Funler.TILE_SIZE); } }
-		 */
 		sr.end();
+	}
 
+	void combine(Tile[][] left, Tile[][] right, Tile[][] leftdown,
+			Tile[][] rightDown) {
+		for (int i = 0; i < cloverChunk.length; i++) {
+			for (int j = 0; j < cloverChunk[0].length; j++) {
+				if (i > 50 && j > 50)
+					cloverChunk[i][j] = rightDown[i - 50][j - 50];
+				else if (i > 50)
+					cloverChunk[i][j] = right[i - 50][j];
+				else if (j > 50)
+					cloverChunk[i][j] = leftdown[i][j - 50];
+				else
+					cloverChunk[i][j] = left[i][j];
+
+			}
+		}
 	}
 
 	public Tile[][] genChunk(int chunkX, int chunkY) {

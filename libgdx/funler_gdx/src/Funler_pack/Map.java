@@ -13,6 +13,7 @@ abstract class Map implements MapGenerator {
 
 	protected Tile[][] curChunk;
 
+
 	private Vector2 mapCurr; // current draw position
 	public Vector2 mapDest; // moving towards
 
@@ -194,7 +195,7 @@ abstract class Map implements MapGenerator {
 	}
 
 	public void drawMiniMap(int chunkX, int chunkY) {
-		sr.begin(ShapeType.Filled);
+		//sr.begin(ShapeType.Filled);
 		float scX = Gdx.graphics.getWidth() / (float) curChunk.length;
 		float scY = Gdx.graphics.getHeight() / (float) curChunk[0].length;
 
@@ -222,7 +223,7 @@ abstract class Map implements MapGenerator {
 		sr.rect((player.x - (chunkX * curChunk.length)) * scX - pushX,
 				(player.y - (chunkY * curChunk.length)) * scY - pushY, scX, scY);
 
-		sr.end();
+		//sr.end();
 	}
 
 	public void update(float dt) {

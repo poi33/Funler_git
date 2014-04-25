@@ -24,7 +24,7 @@ public class PlayScreen implements Screen {
 		// mapc = new ProceduralMapGenerator(Funler.W, Funler.H);
 		// mapc = new MapGen(mapWidth, mapHeight, this);
 		// mapc = new CaveGen(49, 49, player);
-		mapc = new SeedMap(main.player, 2323.00987f);
+		mapc = new SeedMap(main.player, 320.6f);
 
 		// TODO Need to get the next to method to work for the diffrent classes
 		// Tile emptyTile = mapc.getEmpty();

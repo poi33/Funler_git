@@ -15,12 +15,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class ScreenOptions implements Screen {
@@ -29,7 +31,6 @@ public class ScreenOptions implements Screen {
 			Gdx.graphics.getHeight());
 
 	BitmapFont bfont;
-	SpriteBatch batch;
 	Skin skin;
 
 	public Stage stage;
@@ -42,6 +43,7 @@ public class ScreenOptions implements Screen {
 	private TextButton res[];
 	
 	private TextButton back;
+	private Label text;
 
 	Funler game;
 
@@ -50,7 +52,6 @@ public class ScreenOptions implements Screen {
 		
 		bfont = new BitmapFont();
 		this.game = main;
-		batch = new SpriteBatch();
 		stage = new Stage();
 
 		skin = new Skin();
@@ -61,22 +62,26 @@ public class ScreenOptions implements Screen {
 		skin.add("white", new Texture(pixmap));
 
 		// Store the default libgdx font under the name "default".
-		skin.add("default", new BitmapFont());
+		BitmapFont bfont = new BitmapFont();
+		bfont.scale(Gdx.graphics.getHeight()/1000);
+		skin.add("default", bfont);
 
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-		textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
+		textButtonStyle.down = skin.newDrawable("white", Color.GRAY);
 		textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-		textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-		textButtonStyle.font = skin.getFont("default");
+		textButtonStyle.over = skin.newDrawable("white", Color.BLACK);
+		textButtonStyle.font = bfont;
 		skin.add("default", textButtonStyle);
 
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
+		table.row();
 
-		full = simpleButton("Fullscreen "+fullScreen, 1.5f);
-		table.addActor(full);
+		full = new TextButton("Fullscreen "+fullScreen, skin);
+		table.add(full);
+		table.row();
 		
 		full.addListener(new ChangeListener() {
 			@Override
@@ -87,8 +92,9 @@ public class ScreenOptions implements Screen {
 			
 		});
 		
-		scrDef = simpleButton("Set screen", 1.7f);
-		table.addActor(scrDef);
+		scrDef = new TextButton("Set screen", skin);
+		table.add(scrDef);
+		table.row();
 		
 		scrDef.addListener(new ChangeListener() {
 
@@ -106,8 +112,9 @@ public class ScreenOptions implements Screen {
 		
 		
 		res = new TextButton[1];
-		res[0] = simpleButton("1600 - 900", 1.9f);
-		table.addActor(res[0]);
+		res[0] = new TextButton("1600 - 900", skin);
+		table.add(res[0]);
+		table.row();
 
 		res[0].addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
@@ -122,20 +129,18 @@ public class ScreenOptions implements Screen {
 		// table.add(new Image(skin.newDrawable("white",
 		// Color.WHITE))).size(64);
 
-		back =simpleButton("Back", 10);
-		table.addActor(back);
+		back = new TextButton("back", skin);
+		table.add(back);
 
 		back.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 				game.setGuiOptions();
 			}
 		});
-		table.addActor(back);
-		
-		
-
+		table.layout();
 	}
 	
+	@Deprecated
 	private TextButton simpleButton(String s, float downY) {
 		TextButton init = new TextButton(s, skin);
 		init.setPosition(Gdx.graphics.getWidth() /2, Gdx.graphics.getHeight()/downY);
@@ -146,7 +151,7 @@ public class ScreenOptions implements Screen {
 	
 	@Override
 	public void resize(int width, int height) {
-		
+		stage.setViewport(width, height);
 	}
 
 	@Override
@@ -178,12 +183,7 @@ public class ScreenOptions implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		stage.act();
-
-		stage.draw();
-		batch.begin();
-		bfont.draw(batch, "Screen stage", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() /5);
-		batch.end();
-		
+		stage.draw();	
 	}
 
 	@Override

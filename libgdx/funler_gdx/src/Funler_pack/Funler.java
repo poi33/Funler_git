@@ -18,7 +18,7 @@ public class Funler extends Game implements ApplicationListener {
 	public static boolean DEBUG = false;
 
 	public static final int TEXT_SIZE = 5;
-	public static int TILE_SIZE = 50;
+	public static int TILE_SIZE = 25;
 	
 
 	@Override

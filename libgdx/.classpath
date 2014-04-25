@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="funler_gdx-android/src"/>
+	<classpathentry kind="src" path="funler_gdx-desktop/src"/>
+	<classpathentry kind="src" path="funler_gdx/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
