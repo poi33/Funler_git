@@ -1,0 +1,91 @@
+* spellbooks
+- normal = 1 spell
+- rare = 1 - 2 spell(s)
+- legendary = 2
+** spells
+*** fireball (splash damage, fire, can ignite, pushback)
+ - increase local regional temparature: 
+   (higher temp = things are set ablaze easier, including the player)
+   (if small room = fast temp increase, large room = almost no increase)
+ - element [fire] can be resisted, and affected by stats (player and creature)
+ - pushback affected by mass of creature (and player items / stats)
+*** telekinesis
+ - move self (levitation / flying + movespeed at the cost of mana)
+ - 
+   
+* items
+- swing damage? (some might not have)
+- stat bonuses
+** special qualities
+- can be anything you can think of! (but needs balancing)
+*** mana-born... or blood magic :p (health as mana)
+*** lifedrain
+*** mana exhilaration (2x movement speed, multiplied by mana / max_mana)
+ - 0 speed at 0 mana
+*** critical hit
+*** extraordinary willpower (damage goes to mana at 0 hp)
+  - force yourself to stay alive through the power of will! :D
+  - your body is clinically dead at this point, and ceases to aid you.
+  - lose all stats but intelligence
+  - movement costs mana (and requires telekinesis)
+
+* game mechanics
+** items mean everything
+ - they give you spells (through spellbooks), skills, stats... 
+ - only thing they don't give you would be base stats (stats without items) & race traits!
+** stats and leveling!
+*** about stats
+ - your stats are very simple! (also represented as floats)
+ - a strength of 1 = the average strength of a healthy human
+ - thus a strength of 2.5 would make you VERY strong compared to the norm! 
+   (basically 2.5 is equivalent to a weightlifting champion!)
+ - some items may for example require unhuman levels of strength to wield!
+
+ - thus, 1 int = average intelligence of a human, 1 dex = ... average dexterity
+
+ - so if your race is human, your stats all start at 1! (how simple!)
+
+**** primary stats
+ - strength
+ - intelligence
+ - dexterity
+*** levels?
+ - there are no levels! :D (well, there's an average of all your primary stats, and you
+   can think of this as your level)
+ - this average can be a good measure of mob strength
+*** increase stats?
+- there are 2 main ways of gaining stats
+**** training (BASE STATS)
+- think of this as training a muscle, you get stronger over time
+- however, this can only get you so far (as a human anyways)
+- at some point, more muscle mass is not going to be obtainable! (realism! :D)
+- the stats gained through training will be referred to as BASE STATS, and
+  are the ONLY stat not gained through items. 
+- for normal humans these stats will not carry you through the whole game! 
+  (maybe with extreme luck? kiting & dodging everything!)
+- perhaps a sensible human maximum value for BASE STATS would be 2.5?
+  aka, 2.5x as strong as a normal person (a weightlifting champion), 2.5x
+  as smart as the avg. (250 IQ?? lol, why not!... like a savant??). 2.5x
+  as dextrous as the avg? (dunno, maybe some acrobat from the circus or sumth, you
+  know... like fitting into one of those tiny boxes! :D)
+**** items
+- item added stats will be crucial to succeeding on your quest! (or maybe there will
+  be a race that can't use items! (needs good base stats to compensate))
+** legendary items
+ - always drop on death
+ - feel overpowered (but somehow still balanced)
+** dungeon crawler'esque
+*** has the familiar dungeon crawler goal / objective:
+ 1. descend dungeons / stages / levels (increasing difficulity)
+ 2. get to final room
+ 3. retrieve special quest item
+ 4. return to surface
+ 5. win!
+
+ - floors cannot be skipped
+
+*** how is it NOT like a traditional dungeon crawler?
+ - it's realtime, not turn / tick based
+ - not gridlocked to tiles (squares, hexes... triangles :D)
+ - has skillshots / free aiming with mouse
+ - potential for multiplayer (tick based does not lend itself to multiplayer, but realtime does!)
