@@ -32,7 +32,7 @@
 * game mechanics
 ** items mean everything
  - they give you spells (through spellbooks), skills, stats... 
- - only thing they don't give you would be base stats!
+ - only thing they don't give you would be base stats (stats without items) & race traits!
 ** stats and leveling!
 *** about stats
  - your stats are very simple! (also represented as floats)
@@ -53,6 +53,24 @@
  - there are no levels! :D (well, there's an average of all your primary stats, and you
    can think of this as your level)
  - this average can be a good measure of mob strength
+*** increase stats?
+- there are 2 main ways of gaining stats
+**** training (BASE STATS)
+- think of this as training a muscle, you get stronger over time
+- however, this can only get you so far (as a human anyways)
+- at some point, more muscle mass is not going to be obtainable! (realism! :D)
+- the stats gained through training will be referred to as BASE STATS, and
+  are the ONLY stat not gained through items. 
+- for normal humans these stats will not carry you through the whole game! 
+  (maybe with extreme luck? kiting & dodging everything!)
+- perhaps a sensible human maximum value for BASE STATS would be 2.5?
+  aka, 2.5x as strong as a normal person (a weightlifting champion), 2.5x
+  as smart as the avg. (250 IQ?? lol, why not!... like a savant??). 2.5x
+  as dextrous as the avg? (dunno, maybe some acrobat from the circus or sumth, you
+  know... like fitting into one of those tiny boxes! :D)
+**** items
+- item added stats will be crucial to succeeding on your quest! (or maybe there will
+  be a race that can't use items! (needs good base stats to compensate))
 ** legendary items
  - always drop on death
  - feel overpowered (but somehow still balanced)
@@ -70,3 +88,4 @@
  - it's realtime, not turn / tick based
  - not gridlocked to tiles (squares, hexes... triangles :D)
  - has skillshots / free aiming with mouse
+ - potential for multiplayer (tick based does not lend itself to multiplayer, but realtime does!)
