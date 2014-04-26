@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
-// test
 public class Funler extends Game implements ApplicationListener {
 	public static int W;
 	public static int H;
